@@ -25,7 +25,7 @@
          -out traefik-ingress-internal-aks-ingress-contoso-com-tls.crt \
          -keyout traefik-ingress-internal-aks-ingress-contoso-com-tls.key \
          -subj "/CN=*.aks-ingress.contoso.com/O=Contoso Aks Ingress" && \
-   rootCertWilcardIngressController=$(cat traefik-ingress-internal-bicycle-contoso-com-tls.crt | base64 -w 0)
+   rootCertWilcardIngressController=$(cat traefik-ingress-internal-aks-ingress-contoso-com-tls.crt | base64 -w 0)
    ```
 
    App Gateway Certificate
