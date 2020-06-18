@@ -36,7 +36,7 @@
         "hubNetworkName": "[split(parameters('hubVnetResourceId'),'/')[8]]",
 
         "acrPrivateDnsZonesName": "privatelink.azurecr.io",
-        "akvPrivateDnsZonesName": "[concat(variables('orgAppId'),'.vaultcore.azure.net')]"
+        "akvPrivateDnsZonesName": "privatelink.vaultcore.azure.net"
     },
     "resources": [
         {

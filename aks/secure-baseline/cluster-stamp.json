@@ -173,7 +173,7 @@
                     {
                         "name": "privatelink-akv-net",
                         "properties": {
-                            "privateDnsZoneId": "[resourceId(variables('vNetResourceGroup'),'Microsoft.Network/privateDnsZones','BU0001A0008.vaultcore.azure.net')]"
+                            "privateDnsZoneId": "[resourceId(variables('vNetResourceGroup'),'Microsoft.Network/privateDnsZones','privatelink.vaultcore.azure.net')]"
                         }
                     }
                 ]
