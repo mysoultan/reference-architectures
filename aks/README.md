@@ -137,13 +137,6 @@ kubectl wait --namespace a0008 \
   --selector=app.kubernetes.io/name=traefik-ingress-ilb \
   --timeout=90s
 
-# Check Traefik is handling HTTPS
-kubectl -n a0008 run -i --rm --generator=run-pod/v1 --tty alpine --image=alpine -- sh
-echo '10.240.4.4 hello.aks-ingress.contoso.com' | tee -a /etc/hosts
-apk add openssl
-echo | openssl s_client -showcerts -servername hello.aks-ingress.contoso.com -connect hello.aks-ingress.contoso.com:443 2>/dev/null | openssl x509 -inform pem -noout -text
-exit 0
-
 # Install the ASPNET core sample web app
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/workload/aspnetapp.yaml
 
