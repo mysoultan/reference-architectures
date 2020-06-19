@@ -45,6 +45,14 @@
    export TRAEFIK_USER_ASSIGNED_IDENTITY_RESOURCE_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityResourceId.value -o tsv)
    export TRAEFIK_USER_ASSIGNED_IDENTITY_CLIENT_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityClientId.value -o tsv)
    ```
+1. Get Azure KeyVault name
+   ```bash
+   export KEYVAULT_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.keyVaultName.value -o tsv)
+   ```
+1. Get the Azure Tenant Id
+   ```bash
+   export TENANT_ID=$(az account show --query tenantId --output tsv)
+   ```
 
 ### Manually deploy the Ingress Controller and a basic workload
 
@@ -84,7 +92,43 @@ spec:
   selector: traefik-ingress-controller
 EOF
 
-# Install Traefik ingress controller
+# Create a `SecretProviderClasses` resource with with your Azure KeyVault parameters
+# for the Secrets Store CSI driver.
+cat <<EOF | kubectl apply -f -
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: aks-ingress-contoso-com-tls-secret-csi-akv
+  namespace: a0008
+spec:
+  provider: azure
+  parameters:
+    usePodIdentity: "true"
+    keyvaultName: "${KEYVAULT_NAME}"
+    objects:  |
+      array:
+        - |
+          objectName: traefik-ingress-internal-aks-ingress-contoso-com-tls
+          objectAlias: tls.crt
+          objectType: cert
+        - |
+          objectName: traefik-ingress-internal-aks-ingress-contoso-com-tls
+          objectAlias: tls.key
+          objectType: secret
+    tenantId: "${TENANT_ID}"
+EOF
+
+# Install Traefik ingress controller with Azure CSI Provider to obtain
+# the TLS certificates from Azure KeyVault.
+
+  > :warning: IMPORTANT
+  > Azure Pod Identity, there can be some amount of delay in obtaining the certificates from Azure KeyVault.
+  > During the Traefik's pod creation time, aad-pod-identity will need to create the AzureAssignedIdentity for the pod based on the AzureIdentity
+  > and AzureIdentityBinding, retrieve token for Azure KeyVault. This process can take time to complete and it's possible
+  > for the pod volume mount to fail during this time. When the volume mount fails, kubelet will keep retrying until it succeeds.
+  > So the volume mount will eventually succeed after the whole process for retrieving the token is complete.
+  > For more informaton, please refer to https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/pod-identity-mode.md
+
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/workload/traefik.yaml
 
 # Wait for Traefik to be ready

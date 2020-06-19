@@ -892,6 +892,10 @@
         "aksIngressControllerUserManageIdentityClientId":{
             "type":"string",
             "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities','aksic-to-keyvault')).clientId]"
+        },
+        "keyVaultName":{
+            "type":"string",
+            "value": "[variables('keyVaultName')]"
         }
     }
 }

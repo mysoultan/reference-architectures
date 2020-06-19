@@ -263,7 +263,7 @@ spec:
           - name: config
             mountPath: /config
             readOnly: true
-          - name: ssl
+          - name: ssl-csi
             mountPath: /certs
             readOnly: true
         args:
@@ -272,9 +272,12 @@ spec:
         - name: config
           configMap:
             name: traefik-ingress-config
-        - name: ssl
-          secret:
-            secretName: bicycle-contoso-com-tls-secret
+        - name: ssl-csi
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aks-ingress-contoso-com-tls-secret-csi-akv"
         - name: data
           emptyDir: {}
       nodeSelector:
