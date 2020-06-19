@@ -38,9 +38,13 @@
    openssl pkcs12 -export -out appgw.pfx -in appgw.crt -inkey appgw.key -passout pass: && \
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
-
 1. create [the BU 0001's app team secure AKS cluster (ID: A0008)](./secure-baseline/cluster-deploy.azcli)
    > Note: execute this step from VSCode for a better experience
+1. Get the AKS Ingress Controller User Assigned Identity details
+   ```bash
+   export TRAEFIK_USER_ASSIGNED_IDENTITY_RESOURCE_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityResourceId.value -o tsv)
+   export TRAEFIK_USER_ASSIGNED_IDENTITY_CLIENT_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityClientId.value -o tsv)
+   ```
 
 ### Manually deploy the Ingress Controller and a basic workload
 
@@ -51,17 +55,28 @@ the ASPNET Core Docker sample web app and an Ingress object to route to its serv
 # Ensure Flux has created the following namespace and then press Ctrl-C
 kubectl get ns a0008 -w
 
-# Create the traefik default certificate as secret
+# Create the traefik Azure Identity and the Azure Identity Binding to let
+# Azure Active Directory Pod Identity to get tokens on behalf of the Traefik's User Assigned
+# Identity and later on assign them to the Traefik's pod
 cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Secret
+apiVersion: "aadpodidentity.k8s.io/v1"
+kind: AzureIdentity
 metadata:
-  name: bicycle-contoso-com-tls-secret
+  name: aksic-to-keyvault-identity
   namespace: a0008
-data:
-  tls.crt: $(cat traefik-ingress-internal-aks-ingress-contoso-com-tls.crt | base64 -w 0)
-  tls.key: $(cat traefik-ingress-internal-aks-ingress-contoso-com-tls.key | base64 -w 0)
-type: kubernetes.io/tls
+spec:
+  type: 0
+  resourceID: $TRAEFIK_USER_ASSIGNED_IDENTITY_RESOURCE_ID
+  clientID: $TRAEFIK_USER_ASSIGNED_IDENTITY_CLIENT_ID
+---
+apiVersion: "aadpodidentity.k8s.io/v1"
+kind: AzureIdentityBinding
+metadata:
+  name: aksic-to-keyvault-identity-binding
+  namespace: a0008
+spec:
+  azureIdentity: aksic-to-keyvault-identity
+  selector: traefik-ingress-controller
 EOF
 
 # Install Traefik ingress controller
