@@ -159,7 +159,7 @@ kubectl get ingress aspnetapp-ingress -n a0008
 # the workload's router. Therefore, please expect a Http 403 response
 # as a way to probe the router has been properly configured
 
-kubectl -n a0008 run -i --rm --generator=run-pod/v1 --tty curl --image=curlimages/curl -- sh
+kubectl -n a0008 run -i --rm --tty curl --image=curlimages/curl -- sh
 curl --insecure -k -I --resolve bu0001a0008-00.aks-ingress.contoso.com:443:10.240.4.4 https://bu0001a0008-00.aks-ingress.contoso.com
 exit 0
 ```
