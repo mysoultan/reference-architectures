@@ -10,7 +10,7 @@
    kubectl version --client
    ```
 1. [Register the AAD-V2 feature for AKS-managed Azure AD](https://docs.microsoft.com/en-us/azure/aks/managed-aad#before-you-begin)
-1. Provision [a regional hub and spoke virtual networks](./secure-baseline/networking/network-deploy.azcli)
+1. Provision [a regional hub and spoke virtual networks](./networking/network-deploy.azcli)
    > Note: execute this step from VSCode for a better experience
 1. Generate a CA self-signed cert
 
@@ -38,7 +38,7 @@
    openssl pkcs12 -export -out appgw.pfx -in appgw.crt -inkey appgw.key -passout pass: && \
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
-1. create [the BU 0001's app team secure AKS cluster (ID: A0008)](./secure-baseline/cluster-deploy.azcli)
+1. create [the BU 0001's app team secure AKS cluster (ID: A0008)](./cluster-deploy.azcli)
    > Note: execute this step from VSCode for a better experience
 1. Get the AKS Ingress Controller User Assigned Identity details
    ```bash
@@ -138,7 +138,7 @@ kubectl wait --namespace a0008 \
   --timeout=90s
 
 # Install the ASPNET core sample web app
-kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/workload/aspnetapp.yaml
+kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/workload/aspnetapp.yaml
 
 # the ASPNET Core webapp sample is all setup. Wait until is ready to process requests running:
 kubectl wait --namespace a0008 \
