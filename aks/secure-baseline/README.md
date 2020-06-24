@@ -1,3 +1,7 @@
+## Secure AKS cluster baseline
+
+![](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/images/baseline-network-topology.png)
+
 ### Prequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, you can create a [free account](https://azure.microsoft.com/free).
@@ -38,6 +42,19 @@
    openssl pkcs12 -export -out appgw.pfx -in appgw.crt -inkey appgw.key -passout pass: && \
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
+<<<<<<< HEAD
+=======
+
+#### Manually deploy the AKS cluster
+
+   > :bulb: Tip
+   > you could execute [scripts](./deploy) to get the following infrastructure assets
+   > provisioned. However,for a better experience, we do recommend to
+   > execute the following steps manuallly.
+
+1. Provision [a regional hub and spoke virtual networks](./networking/network-deploy.azcli)
+   > Note: execute this step from VSCode for a better experience
+>>>>>>> 43aa0eb... fix image
 1. create [the BU 0001's app team secure AKS cluster (ID: A0008)](./cluster-deploy.azcli)
    > Note: execute this step from VSCode for a better experience
 1. Get the AKS Ingress Controller User Assigned Identity details
