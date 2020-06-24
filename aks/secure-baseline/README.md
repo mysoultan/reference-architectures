@@ -1,8 +1,20 @@
 ## Secure AKS cluster baseline
 
+Lorem Ipsum
+
+### Introduction
+
+Lorem Ipsum
+
+### Architecture
+
+Lorem Ipsum
+
 ![](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/images/baseline-network-topology.png)
 
-### Prequisites
+### Install the Secure AKS cluster baseline Reference Implementation
+
+#### Prequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, you can create a [free account](https://azure.microsoft.com/free).
 1. [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
@@ -14,8 +26,6 @@
    kubectl version --client
    ```
 1. [Register the AAD-V2 feature for AKS-managed Azure AD](https://docs.microsoft.com/en-us/azure/aks/managed-aad#before-you-begin)
-1. Provision [a regional hub and spoke virtual networks](./networking/network-deploy.azcli)
-   > Note: execute this step from VSCode for a better experience
 1. Generate a CA self-signed cert
 
    > :warning: WARNING
@@ -43,7 +53,10 @@
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> cbe80e6... new README structure
 
 #### Manually deploy the AKS cluster
 
@@ -54,7 +67,10 @@
 
 1. Provision [a regional hub and spoke virtual networks](./networking/network-deploy.azcli)
    > Note: execute this step from VSCode for a better experience
+<<<<<<< HEAD
 >>>>>>> 43aa0eb... fix image
+=======
+>>>>>>> cbe80e6... new README structure
 1. create [the BU 0001's app team secure AKS cluster (ID: A0008)](./cluster-deploy.azcli)
    > Note: execute this step from VSCode for a better experience
 1. Get the AKS Ingress Controller User Assigned Identity details
@@ -71,7 +87,7 @@
    export TENANT_ID=$(az account show --query tenantId --output tsv)
    ```
 
-### Manually deploy the Ingress Controller and a basic workload
+#### Manually deploy the Ingress Controller and a basic workload
 
 The following example creates the Ingress Controller (Traefik),
 the ASPNET Core Docker sample web app and an Ingress object to route to its service.
@@ -181,7 +197,7 @@ curl --insecure -k -I --resolve bu0001a0008-00.aks-ingress.contoso.com:443:10.24
 exit 0
 ```
 
-### Test the web app
+#### Test the web app
 
 ```bash
 # query the BU 0001's Azure Application Gateway Public Ip
