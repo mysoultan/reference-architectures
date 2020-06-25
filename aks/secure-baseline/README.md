@@ -26,7 +26,10 @@ Lorem Ipsum
    > Important: the user initiating the deployment process must have the following roles:
    > 1. to deploy the Secure AKS cluster: `Microsoft.Authorization/roleAssignments/write` permission. For more information, please refer to [the Container Insights doc](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-troubleshoot#authorization-error-during-onboarding-or-update-operation)
    > 1. to integrate AKS-managed Azure AD: [User Administrator](https://docs.microsoft.com/en-us/azure/active-directory/users-groups-roles/directory-assign-admin-roles#user-administrator-permissions). If you are not part of the `User Administrator` group from the Tenant associated to your Azure subscription, please consider [creating a new one](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-access-create-new-tenant#create-a-new-tenant-for-your-organization).
-1. [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
+1. [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) or try from shell.azure.com by clicking below
+
+   <a href="https://shell.azure.com" title="Launch Azure Cloud Shell"><img name="launch-cloud-shell" src="https://docs.microsoft.com/azure/includes/media/cloud-shell-try-it/launchcloudshell.png" /></a>
+
 1. [Register the AAD-V2 feature for AKS-managed Azure AD](https://docs.microsoft.com/en-us/azure/aks/managed-aad#before-you-begin)
 1. Generate a CA self-signed cert
 
@@ -72,9 +75,11 @@ Lorem Ipsum
    > we do recommend to execute the following steps manuallly.
 
 1. Create a [new AAD user and group](./aad/aad.azcli) for Kubernetes RBAC purposes
-   > :bulb: Tip: execute this step from VSCode for a better experience
+   > :bulb: Tip: execute this step from VSCode for a better experience. Discard
+   > this if you are using Azure Cloud Shell
 1. Provision [a regional hub and spoke virtual networks](./networking/network-deploy.azcli)
-   > :bulb: Tip: execute this step from VSCode for a better experience
+   > :bulb: Tip: execute this step from VSCode for a better experience. Discard
+   > this if you are using Azure Cloud Shell
 1. create [the BU 0001's app team secure AKS cluster (ID: A0008)](./cluster-deploy.azcli)
    > :bulb: Tip: execute this step from VSCode for a better experience
 1. Get the AKS Ingress Controller User Assigned Identity details
