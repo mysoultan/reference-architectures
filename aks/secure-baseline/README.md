@@ -27,13 +27,6 @@ Lorem Ipsum
    > 1. to deploy the Secure AKS cluster: `Microsoft.Authorization/roleAssignments/write` permission. For more information, please refer to [the Container Insights doc](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-troubleshoot#authorization-error-during-onboarding-or-update-operation)
    > 1. to integrate AKS-managed Azure AD: [User Administrator](https://docs.microsoft.com/en-us/azure/active-directory/users-groups-roles/directory-assign-admin-roles#user-administrator-permissions). If you are not part of the `User Administrator` group from the Tenant associated to your Azure subscription, please consider [creating a new one](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-access-create-new-tenant#create-a-new-tenant-for-your-organization).
 1. [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
-1. Install kubectl 1.18 or later
-   ```bash
-   sudo az aks install-cli
-
-   # ensure you got a version 1.18 or greater
-   kubectl version --client
-   ```
 1. [Register the AAD-V2 feature for AKS-managed Azure AD](https://docs.microsoft.com/en-us/azure/aks/managed-aad#before-you-begin)
 1. Generate a CA self-signed cert
 
@@ -62,7 +55,7 @@ Lorem Ipsum
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
 
-#### Manually deploy the AKS cluster
+#### Create the Secure AKS cluster
 
 1. Query your tenant ids
    ```bash
@@ -92,6 +85,41 @@ Lorem Ipsum
 1. Get Azure KeyVault name
    ```bash
    export KEYVAULT_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.keyVaultName.value -o tsv)
+   ```
+
+#### Install Flux as the GitOps solution for the cluster
+1. Install kubectl 1.18 or later
+   ```bash
+   sudo az aks install-cli
+
+   # ensure you got a version 1.18 or greater
+   kubectl version --client
+   ```
+1. Get AKS Kubeconfig Credntials
+   ```bash
+   az aks get-credentials -n [cluster-name] -g rg-bu0001a0008 --admin
+   ```
+1. Deploy Flux
+
+   > The Flux's operator user from the Gitops team wants to deploy Flux
+   > for the Secure AKS Cluster (Application ID: 0008 under the BU001).
+   > But before executing this action, this user  checks for open PRs againts the
+   > cluster's IaaC git repository looking for authored Kubernets manifest files coming from
+   > the Azure AD team Admin team or any other. After merging all the PRs, the FLux's operator
+   > can procceed with the deployment. The Kubernetes namespace
+   > `cluster-baseline-settings` the desired logical division of the cluster
+   > to home Flux and any other baseline setting among others:
+   >   - Cluster Role Bindings for the AKS-managed Azure AD integration
+   >   - AAD Pod Identity
+   >   - CSI driver and Azure KeyVault CSI Provider
+   >   - the App team's (Application ID: 0008) namespace named a0008
+   ```bash
+   kubectl create namespace cluster-baseline-settings
+   kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/cluster-baseline-settings/flux.yaml
+   kubectl wait --namespace cluster-baseline-settings \
+     --for=condition=ready pod \
+     --selector=app.kubernetes.io/name=flux \
+     --timeout=90s
    ```
 
 #### Manually deploy the Ingress Controller and a basic workload

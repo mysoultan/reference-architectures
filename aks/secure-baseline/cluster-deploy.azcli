@@ -12,25 +12,3 @@ az group create --name rg-bu0001a0008 --location eastus2
 # And then deploy the cluster into it.
 # [This takes about 15 minutes.]
 az deployment group create --resource-group rg-bu0001a0008 --template-file cluster-stamp.json --parameters "@azuredeploy.parameters.prod.json"
-
-# Get AKS Kubeconfig Credntials
-az aks get-credentials -n [cluster-name] -g rg-bu0001a0008 --admin
-
-# The Flux's operator user from the Gitops team wants to deploy Flux
-# for the Secure AKS Cluster (Application ID: 0008 under the BU001).
-# But before executing this action, this user  checks for open PRs againts the
-# cluster's IaaC git repository looking for authored Kubernets manifest files coming from
-# the Azure AD team Admin team or any other. After merging all the PRs, the FLux's operator
-# can procceed with the deployment. The Kubernetes namespace
-# `cluster-baseline-settings` the desired logical division of the cluster
-# to home Flux and any other baseline setting among others:
-#   - Cluster Role Bindings for the AKS-managed Azure AD integration
-#   - AAD Pod Identity
-#   - CSI driver and Azure KeyVault CSI Provider
-#   - the App team's (Application ID: 0008) namespace named a0008
-kubectl create namespace cluster-baseline-settings
-kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/cluster-baseline-settings/flux.yaml
-kubectl wait --namespace cluster-baseline-settings \
-  --for=condition=ready pod \
-  --selector=app.kubernetes.io/name=flux \
-  --timeout=90s
