@@ -6,6 +6,12 @@ Lorem Ipsum
 
 Lorem Ipsum
 
+#### Guidance
+
+This project has a companion set of articles that describe challenges, design patterns, and best practices for a Secure AKS cluster. You can find this article on the Azure Architecture Center:
+
+[Baseline architecture for a secure AKS cluster](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/)
+
 ### Architecture
 
 Lorem Ipsum
@@ -17,6 +23,9 @@ Lorem Ipsum
 #### Prequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, you can create a [free account](https://azure.microsoft.com/free).
+   > Important: the user initiating the deployment process must have the following roles:
+   > 1. to deploy the Secure AKS cluster: `Microsoft.Authorization/roleAssignments/write` permission. For more information, please refer to [the Container Insights doc](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-troubleshoot#authorization-error-during-onboarding-or-update-operation)
+   > 1. to integrate AKS-managed Azure AD: [User Administrator](https://docs.microsoft.com/en-us/azure/active-directory/users-groups-roles/directory-assign-admin-roles#user-administrator-permissions). If you are not part of the `User Administrator` group from the Tenant associated to your Azure subscription, please consider [creating a new one](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-access-create-new-tenant#create-a-new-tenant-for-your-organization).
 1. [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
 1. Install kubectl 1.18 or later
    ```bash
@@ -52,27 +61,29 @@ Lorem Ipsum
    openssl pkcs12 -export -out appgw.pfx -in appgw.crt -inkey appgw.key -passout pass: && \
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> cbe80e6... new README structure
 
 #### Manually deploy the AKS cluster
 
-   > :bulb: Tip
-   > you could execute [scripts](./deploy) to get the following infrastructure assets
-   > provisioned. However,for a better experience, we do recommend to
-   > execute the following steps manuallly.
+1. Query your tenant ids
+   ```bash
+   export TENANT_ID=$(az account show --query tenantId --output tsv)
 
+   # Login into the tenant you are User Admistrator. Re-use the TENANT_ID
+   # env var if your are User Administrator from the Azure subscription tenant
+   az login --tenant <tenant-id-with-user-admin-permissions> --allow-no-subscriptions
+
+   export K8S_RBAC_AAD_PROFILE_TENANTID=$(az account show --query tenantId --output tsv)
+   ```
+   > :bulb: Tip: you could execute [scripts](./deploy) to get the following
+   > infrastructure assetsprovisioned. However,for a better experience,
+   > we do recommend to execute the following steps manuallly.
+
+1. Create a [new AAD user and group](./aad/aad.azcli) for Kubernetes RBAC purposes
+   > :bulb: Tip: execute this step from VSCode for a better experience
 1. Provision [a regional hub and spoke virtual networks](./networking/network-deploy.azcli)
-   > Note: execute this step from VSCode for a better experience
-<<<<<<< HEAD
->>>>>>> 43aa0eb... fix image
-=======
->>>>>>> cbe80e6... new README structure
+   > :bulb: Tip: execute this step from VSCode for a better experience
 1. create [the BU 0001's app team secure AKS cluster (ID: A0008)](./cluster-deploy.azcli)
-   > Note: execute this step from VSCode for a better experience
+   > :bulb: Tip: execute this step from VSCode for a better experience
 1. Get the AKS Ingress Controller User Assigned Identity details
    ```bash
    export TRAEFIK_USER_ASSIGNED_IDENTITY_RESOURCE_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityResourceId.value -o tsv)
@@ -81,10 +92,6 @@ Lorem Ipsum
 1. Get Azure KeyVault name
    ```bash
    export KEYVAULT_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.keyVaultName.value -o tsv)
-   ```
-1. Get the Azure Tenant Id
-   ```bash
-   export TENANT_ID=$(az account show --query tenantId --output tsv)
    ```
 
 #### Manually deploy the Ingress Controller and a basic workload

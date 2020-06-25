@@ -16,21 +16,21 @@ az deployment group create --resource-group rg-bu0001a0008 --template-file clust
 # Get AKS Kubeconfig Credntials
 az aks get-credentials -n [cluster-name] -g rg-bu0001a0008 --admin
 
-
-# The Azure Active Directory Admin team wants to grant access to the new created
-# cluster. Initially for AAD Bicycle Contoso Tenant Administrators. Therefore a new
-# group is created in the AAD that represents the Kubernetes Cluster Admin Role.
-# Later on the AAD Admin team will review the baseline settings of the cluster and
-# edit the `aks/security-baseline/cluster-baseline-settings/user-facing-cluster-role-aad-group.yaml`
-# to replace the placeholder `replace-with-an-aad-group-object-id-for-k8s-admin-clusterrole`
-# with the object id for the recently added AAD group.
-
-# Deploy flux
+# The Flux's operator user from the Gitops team wants to deploy Flux
+# for the Secure AKS Cluster (Application ID: 0008 under the BU001).
+# But before executing this action, this user  checks for open PRs againts the
+# cluster's IaaC git repository looking for authored Kubernets manifest files coming from
+# the Azure AD team Admin team or any other. After merging all the PRs, the FLux's operator
+# can procceed with the deployment. The Kubernetes namespace
+# `cluster-baseline-settings` the desired logical division of the cluster
+# to home Flux and any other baseline setting among others:
+#   - Cluster Role Bindings for the AKS-managed Azure AD integration
+#   - AAD Pod Identity
+#   - CSI driver and Azure KeyVault CSI Provider
+#   - the App team's (Application ID: 0008) namespace named a0008
 kubectl create namespace cluster-baseline-settings
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/cluster-baseline-settings/flux.yaml
 kubectl wait --namespace cluster-baseline-settings \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/name=flux \
   --timeout=90s
-
-
