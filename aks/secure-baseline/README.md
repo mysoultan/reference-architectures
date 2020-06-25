@@ -137,11 +137,6 @@ The following example creates the Ingress Controller (Traefik),
 the ASPNET Core Docker sample web app and an Ingress object to route to its service.
 
 ```bash
-# Import the *.aks-ingress.contoso.com to AzureKeyVault
-az keyvault set-policy --certificate-permissions import -n $KEYVAULT_NAME --upn $(az account show --query user.name -o tsv) && \
-cat traefik-ingress-internal-aks-ingress-contoso-com-tls.crt traefik-ingress-internal-aks-ingress-contoso-com-tls.key > traefik-ingress-internal-aks-ingress-contoso-com-tls.pem && \
-az keyvault certificate import --vault-name $KEYVAULT_NAME -f traefik-ingress-internal-aks-ingress-contoso-com-tls.pem -n traefik-ingress-internal-aks-ingress-contoso-com-tls
-
 # Ensure Flux has created the following namespace and then press Ctrl-C
 kubectl get ns a0008 -w
 
