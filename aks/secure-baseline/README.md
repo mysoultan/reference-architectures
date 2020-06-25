@@ -249,3 +249,12 @@ export APPGW_PUBLIC_IP=$(az deployment group show --resource-group rg-enterprise
 
 1. In your browser navigate the site anyway (A warning will be present)
    https://bicycle.contoso.com/
+
+### Clean up
+
+```bash
+az group delete -n rg-bu0001a0008 --yes && \
+az group delete -n rg-enterprise-networking-spokes --yes && \
+az group delete -n rg-enterprise-networking-hubs --yes && \
+az keyvault purge --name $KEYVAULT_NAME --location eastus2 --yes
+```
