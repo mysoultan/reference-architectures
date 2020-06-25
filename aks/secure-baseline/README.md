@@ -100,9 +100,13 @@ Lorem Ipsum
    # ensure you got a version 1.18 or greater
    kubectl version --client
    ```
+1. Get AKS Secure cluster  name
+   ```bash
+   export AKS_CLUSTER_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksClusterName.value -o tsv)
+   ```
 1. Get AKS Kubeconfig Credntials
    ```bash
-   az aks get-credentials -n [cluster-name] -g rg-bu0001a0008 --admin
+   az aks get-credentials -n $AKS_CLUSTER_NAME -g rg-bu0001a0008 --admin
    ```
 1. Deploy Flux
 
