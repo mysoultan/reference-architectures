@@ -1,6 +1,8 @@
-# AKS Contoso Bicycle (Secure Baseline)
-
-## Introduction
+<h1 align="center">
+  <br>
+  AKS Contoso Bicycle (Secure Baseline)
+  <br>
+</h1>
 
 This reference implementation shows the recommended architecture for a typical
 organization moving containerized business applications to an AKS cluster
@@ -10,7 +12,7 @@ This is meant to guide an interdisciplinary team or multiple teams like networki
 security and development through a fictional process of getting this secure baseline
 infrastructure up and running.
 
-### Guidance
+## Guidance
 
 This project has a companion set of articles that describe challenges, design patterns, and best practices for a Secure AKS cluster. You can find this article on the Azure Architecture Center:
 
