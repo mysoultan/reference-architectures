@@ -63,9 +63,9 @@ In-cluster components:
 
 ![](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/images/baseline-network-topology.png)
 
-## Install the Secure AKS cluster baseline Reference Implementation
+## Getting Started
 
-### Prequisites
+### Pre-Requisites
 
 1. An Azure subscription. If you don't have an Azure subscription, you can create a [free account](https://azure.microsoft.com/free).
    > Important: the user initiating the deployment process must have the following roles:
@@ -133,9 +133,10 @@ In-cluster components:
 
    export K8S_RBAC_AAD_PROFILE_TENANTID=$(az account show --query tenantId --output tsv)
    ```
-   > :bulb: Tip: you could execute [scripts](./deploy) to get the following
-   > infrastructure assets provisioned. However,for a better experience,
-   > we do recommend to execute the following steps manuallly.
+   > :bulb: Tip: you could skip the full narrative and execute [scripts](./deploy)
+   > to get the all the infrastructure assets from this section provisioned.
+   > However, we do recommend to execute the following steps manuallly for a
+   > better experience.
 
 1. Create a [new AAD user and group](./aad/aad.azcli) for Kubernetes RBAC purposes
    > :bulb: Tip: execute this step from VSCode for a better experience. Discard
