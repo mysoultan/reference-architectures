@@ -7,7 +7,7 @@ organization moving containerized business applications to an AKS cluster
 with security in mind.
 
 This is meant to guide an interdisciplinary team or multiple teams like networking,
-security and development through a fictional process to get this secure baseline
+security and development through a fictional process of getting this secure baseline
 infrastructure up and running.
 
 #### Guidance
@@ -25,15 +25,13 @@ An AKS cluster can be smoothly integrated with other Azure services that will
 deliver observability, provide a network topology thinking about
 a multi-regional growing and keep the in-cluster traffic secure as well.
 
-Additionally, nowadays GitOps is paramount when thinking about cluster management
-lifecycle so this another key topic that will be also handled as part of this
-Reference Implementation.
+Additionally, GitOps is paramount for the cluster management lifecycle so
+this another key topic that will be also handled as part of this Reference Implementation.
 
-This architecture is built for a fictitious company, Contoso Bicycle. The company is a small
-and fast-growing startup that provides online web services to its clientele in the west coast,
-North America. They have no on-premises datacenters and all their containerized
-are now about to orchestrated by a Secure AKS cluster.
-
+Contoso Bicycle is a fictional is a small and fast-growing startup that provides
+online web services to its clientele in the west coast, North America.
+They have no on-premises datacenters and all their containerized line of
+business applications are now about to be orchestrated by a Secure AKS cluster.
 
 Contoso Bicycle is planning to use the [ASPNET Core Docker Sample App](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp)
 as a first experiment that will help them to evaluate and test their new infrastructure.
@@ -136,7 +134,7 @@ In-cluster components:
    export KEYVAULT_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.keyVaultName.value -o tsv)
    ```
 
-#### Install Flux as the GitOps solution for the cluster
+#### Flux as the GitOps solution
 1. Install kubectl 1.18 or later
    ```bash
    sudo az aks install-cli
@@ -175,7 +173,7 @@ In-cluster components:
      --timeout=90s
    ```
 
-#### Manually deploy the Ingress Controller and a basic workload
+#### Traefik Ingress Controller with Azure KeyVault CSI integration
 
 The following example creates the Ingress Controller (Traefik),
 the ASPNET Core Docker sample web app and an Ingress object to route to its service.
@@ -237,23 +235,23 @@ EOF
 # Install Traefik ingress controller with Azure CSI Provider to obtain
 # the TLS certificates from Azure KeyVault.
 
-  > :warning: IMPORTANT
-  > Azure Pod Identity, there can be some amount of delay in obtaining the certificates from Azure KeyVault.
-  > During the Traefik's pod creation time, aad-pod-identity will need to create the AzureAssignedIdentity for the pod based on the AzureIdentity
-  > and AzureIdentityBinding, retrieve token for Azure KeyVault. This process can take time to complete and it's possible
-  > for the pod volume mount to fail during this time. When the volume mount fails, kubelet will keep retrying until it succeeds.
-  > So the volume mount will eventually succeed after the whole process for retrieving the token is complete.
-  > For more informaton, please refer to https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/pod-identity-mode.md
-
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/workload/traefik.yaml
 
 # Wait for Traefik to be ready
+# During the Traefik's pod creation time, aad-pod-identity will need to create the AzureAssignedIdentity for the pod based on the AzureIdentity
+# and AzureIdentityBinding, retrieve token for Azure KeyVault. This process can take time to complete and it's possible
+# for the pod volume mount to fail during this time but the volume mount will eventually succeed.
+# For more informaton, please refer to https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/pod-identity-mode.md
+
 kubectl wait --namespace a0008 \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/name=traefik-ingress-ilb \
   --timeout=90s
+```
 
-# Install the ASPNET core sample web app
+# the ASPNET core sample web app
+
+```bash
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/workload/aspnetapp.yaml
 
 # the ASPNET Core webapp sample is all setup. Wait until is ready to process requests running:
