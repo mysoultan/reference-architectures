@@ -5,11 +5,6 @@ kind: ClusterRole
 metadata:
   name: kured
 rules:
-  # Allow kured to read spec.unschedulable
-  # Allow kubectl to drain/uncordon
-  #
-  # NB: These permissions are tightly coupled to the bundled version of kubectl; the ones below
-  # match https://github.com/kubernetes/kubernetes/blob/v1.17.5/staging/src/k8s.io/kubectl/pkg/cmd/drain/drain.go
   - apiGroups: [""]
     resources: ["nodes"]
     verbs: ["get", "patch"]
@@ -42,7 +37,6 @@ metadata:
   namespace: cluster-baseline-settings
   name: kured
 rules:
-  # Allow kured to lock/unlock itself
   - apiGroups: ["apps"]
     resources: ["daemonsets"]
     resourceNames: ["kured"]
@@ -71,8 +65,8 @@ metadata:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: kured # Must match `--ds-name`
-  namespace: cluster-baseline-settings # Must match `--ds-namespace`
+  name: kured
+  namespace: cluster-baseline-settings
 spec:
   selector:
     matchLabels:
@@ -91,20 +85,15 @@ spec:
       tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
-      hostPID: true # Facilitate entering the host mount namespace via init
+      hostPID: true
       restartPolicy: Always
       containers:
         - name: kured
-          image:
-            docker.io/weaveworks/kured:1.4.0
-            # If you find yourself here wondering why there is no
-            # :latest tag on Docker Hub,see the FAQ in the README
+          image: docker.io/weaveworks/kured:1.4.0
           imagePullPolicy: IfNotPresent
           securityContext:
-            privileged: true # Give permission to nsenter /proc/1/ns/mnt
+            privileged: true
           env:
-            # Pass in the name of the node on which this pod is scheduled
-            # for use with drain/uncordon operations and lock acquisition
             - name: KURED_NODE_ID
               valueFrom:
                 fieldRef:
