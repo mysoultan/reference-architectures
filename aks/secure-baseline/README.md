@@ -75,7 +75,8 @@ In-cluster components:
 1. [Register the AAD-V2 feature for AKS-managed Azure AD](https://docs.microsoft.com/en-us/azure/aks/managed-aad#before-you-begin)
 1. Clone or download this repo locally.
    ```bash
-   git clone https://github.com/mspnp/microservices-reference-implementation.git
+   git clone https://github.com/mspnp/reference-architectures.git && \
+   cd reference-architectures/aks/secure-baseline
    ```
 
    > :bulb: Tip: The deployment steps shown here use Bash shell commands. On Windows, you can use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/about#what-is-wsl-2) to run Bash.
