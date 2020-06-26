@@ -1,6 +1,6 @@
-## AKS Contoso Bicycle (Secure Baseline)
+# AKS Contoso Bicycle (Secure Baseline)
 
-### Introduction
+## Introduction
 
 This reference implementation shows the recommended architecture for a typical
 organization moving containerized business applications to an AKS cluster
@@ -10,13 +10,13 @@ This is meant to guide an interdisciplinary team or multiple teams like networki
 security and development through a fictional process of getting this secure baseline
 infrastructure up and running.
 
-#### Guidance
+### Guidance
 
 This project has a companion set of articles that describe challenges, design patterns, and best practices for a Secure AKS cluster. You can find this article on the Azure Architecture Center:
 
 [Baseline architecture for a secure AKS cluster](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/)
 
-### Architecture
+## Architecture
 
 This architecture is mainly concentrated in the AKS cluster identity, secret
 management and keep end-to-end traffic securely.
@@ -37,7 +37,7 @@ Contoso Bicycle is planning to use the [ASPNET Core Docker Sample App](https://g
 as a first experiment that will help them to evaluate and test their new infrastructure.
 This is the only part that is not going to reflect a real-world application.
 
- #### Core components that compose this baseline:
+### Core components that compose this baseline:
 
 Azure platform:
 1. AKS v1.17.X
@@ -60,9 +60,9 @@ In-cluster components:
 
 ![](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/images/baseline-network-topology.png)
 
-### Install the Secure AKS cluster baseline Reference Implementation
+## Install the Secure AKS cluster baseline Reference Implementation
 
-#### Prequisites
+### Prequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, you can create a [free account](https://azure.microsoft.com/free).
    > Important: the user initiating the deployment process must have the following roles:
@@ -109,7 +109,7 @@ In-cluster components:
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
 
-#### Create the Secure AKS cluster
+### Create the Secure AKS cluster
 
 1. Query your tenant ids
    ```bash
@@ -143,7 +143,7 @@ In-cluster components:
    export KEYVAULT_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.keyVaultName.value -o tsv)
    ```
 
-#### Flux as the GitOps solution
+### Flux as the GitOps solution
 1. Install kubectl 1.18 or later
    ```bash
    sudo az aks install-cli
@@ -182,7 +182,7 @@ In-cluster components:
      --timeout=90s
    ```
 
-#### Traefik Ingress Controller with Azure KeyVault CSI integration
+### Traefik Ingress Controller with Azure KeyVault CSI integration
 
 The following example creates the Ingress Controller (Traefik),
 the ASPNET Core Docker sample web app and an Ingress object to route to its service.
@@ -258,7 +258,7 @@ kubectl wait --namespace a0008 \
   --timeout=90s
 ```
 
-# the ASPNET core sample web app
+### the ASPNET core sample web app
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/workload/aspnetapp.yaml
@@ -287,7 +287,7 @@ curl --insecure -k -I --resolve bu0001a0008-00.aks-ingress.contoso.com:443:10.24
 exit 0
 ```
 
-#### Test the web app
+### Test the web app
 
 ```bash
 # query the BU 0001's Azure Application Gateway Public Ip
@@ -301,7 +301,7 @@ export APPGW_PUBLIC_IP=$(az deployment group show --resource-group rg-enterprise
 1. In your browser navigate the site anyway (A warning will be present)
    https://bicycle.contoso.com/
 
-### Clean up
+## Clean up
 
 ```bash
 az group delete -n rg-bu0001a0008 --yes && \
