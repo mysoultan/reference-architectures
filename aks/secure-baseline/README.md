@@ -33,7 +33,7 @@ online web services to its clientele in the west coast, North America.
 They have no on-premises datacenters and all their containerized line of
 business applications are now about to be orchestrated by a Secure AKS cluster.
 
-Contoso Bicycle is planning to use the [ASPNET Core Docker Web Sample App](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp)
+Contoso Bicycle is planning to use the [ASPNET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp)
 as a first experiment that will help them to evaluate and test their new infrastructure.
 This is the only part that is not going to reflect a real-world application.
 
@@ -157,7 +157,7 @@ In-cluster components:
    >   - Cluster Role Bindings for the AKS-managed Azure AD integration
    >   - AAD Pod Identity
    >   - CSI driver and Azure KeyVault CSI Provider
-   >   - the App team's (Application ID: 0008) namespace named a0008
+   >   - the App team (Application ID: 0008) namespace named a0008
 
 1. Install kubectl 1.18 or later
    ```bash
@@ -186,7 +186,7 @@ In-cluster components:
 
 ### Traefik Ingress Controller with Azure KeyVault CSI integration
 
-> The app team's knows that sooner rather than later they will need
+> The app team knows that sooner rather than later they will need
 > to expose their backend services outside their AKS cluster. Therefore,
 > they are tasked to deploy an Ingress Controller and their preference is Traefik.
 > They want to manage their secrets in a very secure manner, so they opted to use
@@ -271,11 +271,11 @@ kubectl wait --namespace a0008 \
   --timeout=90s
 ```
 
-### the ASPNET core sample web app
+### The ASPNET Core Docker sample web app
 
 > The app team is about to conclude this journey, but they need an app to test
 > their new infrastructure blocks. For this task they picked out the
-> [ASPNET Core Docker Web Sample App](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp).
+> [ASPNET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp).
 > Addittionally, they will include as part of the desired configuration for it
 > some of the following concepts:
 > - Ingress resource object
@@ -284,7 +284,7 @@ kubectl wait --namespace a0008 \
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/workload/aspnetapp.yaml
 
-# the ASPNET Core webapp sample is all setup. Wait until is ready to process requests running:
+# The ASPNET Core Docker sample web app is all setup. Wait until is ready to process requests running:
 kubectl wait --namespace a0008 \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/name=aspnetapp \
@@ -310,9 +310,9 @@ exit 0
 
 ### Test the web app
 
-> Once the test phase is carried out, the actual Contoso Bicycle line of
-> business application ID 0008 could be deployed to its new AKS cluster for
-> the Business Unit 001
+> The app team conducts a final acceptance test to be sure that traffic is
+> flowing end-to-end as expected, so they place a request against the Azure
+> Application Gateway
 
 ```bash
 # query the BU 0001's Azure Application Gateway Public Ip
@@ -327,6 +327,10 @@ export APPGW_PUBLIC_IP=$(az deployment group show --resource-group rg-enterprise
    https://bicycle.contoso.com/
 
 ## Clean up
+
+> Once the test phase is carried out, the actual Contoso Bicycle line of
+> business application ID 0008 could be deployed to its new AKS cluster for
+> the Business Unit 001
 
 ```bash
 az group delete -n rg-bu0001a0008 --yes && \
