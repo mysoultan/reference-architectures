@@ -1,10 +1,14 @@
-## Secure AKS cluster baseline
-
-Lorem Ipsum
+## AKS Contoso Bicycle (Secure Baseline)
 
 ### Introduction
 
-Lorem Ipsum
+This reference implementation shows the recommended architecture for a typical
+organization moving containerized business applications to an AKS cluster
+with security in mind.
+
+This is meant to guide an interdisciplinary team or multiple teams like networking,
+security and development through a fictional process to get this secure baseline
+infrastructure up and running.
 
 #### Guidance
 
@@ -14,7 +18,47 @@ This project has a companion set of articles that describe challenges, design pa
 
 ### Architecture
 
-Lorem Ipsum
+This architecture is mainly concentrated in the AKS cluster identity, secret
+management and keep end-to-end traffic securely.
+
+An AKS cluster can be smoothly integrated with other Azure services that will
+deliver observability, provide a network topology thinking about
+a multi-regional growing and keep the in-cluster traffic secure as well.
+
+Additionally, nowadays GitOps is paramount when thinking about cluster management
+lifecycle so this another key topic that will be also handled as part of this
+Reference Implementation.
+
+This architecture is built for a fictitious company, Contoso Bicycle. The company is a small
+and fast-growing startup that provides online web services to its clientele in the west coast,
+North America. They have no on-premises datacenters and all their containerized
+are now about to orchestrated by a Secure AKS cluster.
+
+
+Contoso Bicycle is planning to use the [ASPNET Core Docker Sample App](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp)
+as a first experiment that will help them to evaluate and test their new infrastructure.
+This is the only part that is not going to reflect a real-world application.
+
+ #### Core components that compose this baseline:
+
+Azure platform:
+1. AKS v1.17.X
+   * System and User nodepool
+   * AKS-managed Azure AD integration
+   * Managed Identities
+   * Azure CNI
+   * Azure Monitor for Containers
+1. Azure Virtual Networks
+1. Azure Application Gateway
+1. AKS-managed Internal Load Balancers
+1. Azure Firewall
+
+In-cluster components:
+
+1. Flux v1.19.0
+1. AAD Pod Identity v1.6.1
+1. Azure KeyVault CSI Provider v0.0.6
+1. Traefik Ingress Controller v2.2.1
 
 ![](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/images/baseline-network-topology.png)
 
