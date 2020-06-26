@@ -28,12 +28,12 @@ a multi-regional growing and keep the in-cluster traffic secure as well.
 Additionally, GitOps is paramount for the cluster management lifecycle so
 this another key topic that will be also handled as part of this Reference Implementation.
 
-Contoso Bicycle is a fictional is a small and fast-growing startup that provides
+Contoso Bicycle is a fictional small and fast-growing startup that provides
 online web services to its clientele in the west coast, North America.
 They have no on-premises datacenters and all their containerized line of
 business applications are now about to be orchestrated by a Secure AKS cluster.
 
-Contoso Bicycle is planning to use the [ASPNET Core Docker Sample App](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp)
+Contoso Bicycle is planning to use the [ASPNET Core Docker Web Sample App](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp)
 as a first experiment that will help them to evaluate and test their new infrastructure.
 This is the only part that is not going to reflect a real-world application.
 
@@ -54,9 +54,10 @@ Azure platform:
 In-cluster components:
 
 1. Flux v1.19.0
+1. Traefik Ingress Controller v2.2.1
 1. AAD Pod Identity v1.6.1
 1. Azure KeyVault CSI Provider v0.0.6
-1. Traefik Ingress Controller v2.2.1
+1. Kured v1.4.0
 
 ![](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/images/baseline-network-topology.png)
 
@@ -83,13 +84,21 @@ In-cluster components:
 
 1. [OpenSSL](https://github.com/openssl/openssl#download)
 
+### Acquire the Contoso Bicycle CA certificates
+
 1. Generate a CA self-signed cert
+
+   > Contoso Bicycle needs to buy CA certificates, they preference is to
+   > own two different TLS certificates. The first one is going to be serve
+   > in front of the Azure Application Gateway and another one at the
+   > Ingress Controller level. This is something that can be prefectly achieved
+   > when configuring Azure Application Gateway End-to-end TLS encryption.
 
    > :warning: WARNING
    > Do not use the certificates created by these scripts for production. The certificates are provided for demonstration purposes only. For your production cluster, use your security best practices for digital certificates creation and lifetime management.
    > Self-signed certificates are not trusted by default and they can be difficult to maintain. Also, they may use outdated hash and cipher suites that may not be strong. For better security, purchase a certificate signed by a well-known certificate authority.
 
-   Cluster Certificate - AKS Internal Load Balancer
+   Cluster Ingress Controller Certificate: `*.aks-ingress.contoso.com`
 
    ```bash
    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
@@ -99,7 +108,7 @@ In-cluster components:
    rootCertWilcardIngressController=$(cat traefik-ingress-internal-aks-ingress-contoso-com-tls.crt | base64 -w 0)
    ```
 
-   App Gateway Certificate
+   Azure Application Gateway Certificate: `bicycle.contoso.com`
 
    ```bash
    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
@@ -134,17 +143,22 @@ In-cluster components:
    > this if you are using Azure Cloud Shell
 1. create [the BU 0001's app team secure AKS cluster (ID: A0008)](./cluster-deploy.azcli)
    > :bulb: Tip: execute this step from VSCode for a better experience
-1. Get the AKS Ingress Controller User Assigned Identity details
-   ```bash
-   export TRAEFIK_USER_ASSIGNED_IDENTITY_RESOURCE_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityResourceId.value -o tsv)
-   export TRAEFIK_USER_ASSIGNED_IDENTITY_CLIENT_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityClientId.value -o tsv)
-   ```
-1. Get Azure KeyVault name
-   ```bash
-   export KEYVAULT_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.keyVaultName.value -o tsv)
-   ```
 
 ### Flux as the GitOps solution
+
+   > The Flux's operator user from the Gitops team wants to deploy Flux
+   > for the Secure AKS Cluster (Application ID: 0008 under the BU001).
+   > But before executing this action, this user  checks for open PRs againts the
+   > cluster's IaaC git repository looking for authored Kubernets manifest files coming from
+   > the Azure AD team Admin team or any other. After merging all the PRs, the FLux's operator
+   > can procceed with the deployment. The Kubernetes namespace
+   > `cluster-baseline-settings` the desired logical division of the cluster
+   > to home Flux and any other baseline setting among others:
+   >   - Cluster Role Bindings for the AKS-managed Azure AD integration
+   >   - AAD Pod Identity
+   >   - CSI driver and Azure KeyVault CSI Provider
+   >   - the App team's (Application ID: 0008) namespace named a0008
+
 1. Install kubectl 1.18 or later
    ```bash
    sudo az aks install-cli
@@ -161,19 +175,6 @@ In-cluster components:
    az aks get-credentials -n $AKS_CLUSTER_NAME -g rg-bu0001a0008 --admin
    ```
 1. Deploy Flux
-
-   > The Flux's operator user from the Gitops team wants to deploy Flux
-   > for the Secure AKS Cluster (Application ID: 0008 under the BU001).
-   > But before executing this action, this user  checks for open PRs againts the
-   > cluster's IaaC git repository looking for authored Kubernets manifest files coming from
-   > the Azure AD team Admin team or any other. After merging all the PRs, the FLux's operator
-   > can procceed with the deployment. The Kubernetes namespace
-   > `cluster-baseline-settings` the desired logical division of the cluster
-   > to home Flux and any other baseline setting among others:
-   >   - Cluster Role Bindings for the AKS-managed Azure AD integration
-   >   - AAD Pod Identity
-   >   - CSI driver and Azure KeyVault CSI Provider
-   >   - the App team's (Application ID: 0008) namespace named a0008
    ```bash
    kubectl create namespace cluster-baseline-settings
    kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/cluster-baseline-settings/flux.yaml
@@ -185,10 +186,21 @@ In-cluster components:
 
 ### Traefik Ingress Controller with Azure KeyVault CSI integration
 
-The following example creates the Ingress Controller (Traefik),
-the ASPNET Core Docker sample web app and an Ingress object to route to its service.
+> The app team's knows that sooner rather than later they will need
+> to expose their backend services outside their AKS cluster. Therefore,
+> they are tasked to deploy an Ingress Controller and their preference is Traefik.
+> They want to manage their secrets in a very secure manner, so they opted to use
+> the Azure KeyVault CSI Provider to mount their TLS certificate that
+> happens to be are stored in Azure KeyVault.
 
 ```bash
+# Get the AKS Ingress Controller User Assigned Identity details
+export TRAEFIK_USER_ASSIGNED_IDENTITY_RESOURCE_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityResourceId.value -o tsv)
+export TRAEFIK_USER_ASSIGNED_IDENTITY_CLIENT_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityClientId.value -o tsv)
+
+# Get Azure KeyVault name
+export KEYVAULT_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.keyVaultName.value -o tsv)
+
 # Ensure Flux has created the following namespace and then press Ctrl-C
 kubectl get ns a0008 -w
 
@@ -251,7 +263,7 @@ kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures
 # During the Traefik's pod creation time, aad-pod-identity will need to create the AzureAssignedIdentity for the pod based on the AzureIdentity
 # and AzureIdentityBinding, retrieve token for Azure KeyVault. This process can take time to complete and it's possible
 # for the pod volume mount to fail during this time but the volume mount will eventually succeed.
-# For more informaton, please refer to https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/pod-identity-mode.md
+# For more information, please refer to https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/pod-identity-mode.md
 
 kubectl wait --namespace a0008 \
   --for=condition=ready pod \
@@ -260,6 +272,14 @@ kubectl wait --namespace a0008 \
 ```
 
 ### the ASPNET core sample web app
+
+> The app team is about to conclude this journey, but they need an app to test
+> their new infrastructure blocks. For this task they picked out the
+> [ASPNET Core Docker Web Sample App](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp).
+> Addittionally, they will include as part of the desired configuration for it
+> some of the following concepts:
+> - Ingress resource object
+> - Network Policy to allow Ingress Controller establish connection with the app
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/workload/aspnetapp.yaml
@@ -289,6 +309,10 @@ exit 0
 ```
 
 ### Test the web app
+
+> Once the test phase is carried out, the actual Contoso Bicycle line of
+> business application ID 0008 could be deployed to its new AKS cluster for
+> the Business Unit 001
 
 ```bash
 # query the BU 0001's Azure Application Gateway Public Ip
