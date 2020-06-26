@@ -73,6 +73,15 @@ In-cluster components:
    <a href="https://shell.azure.com" title="Launch Azure Cloud Shell"><img name="launch-cloud-shell" src="https://docs.microsoft.com/azure/includes/media/cloud-shell-try-it/launchcloudshell.png" /></a>
 
 1. [Register the AAD-V2 feature for AKS-managed Azure AD](https://docs.microsoft.com/en-us/azure/aks/managed-aad#before-you-begin)
+1. Clone or download this repo locally.
+   ```bash
+   git clone https://github.com/mspnp/microservices-reference-implementation.git
+   ```
+
+   > :bulb: Tip: The deployment steps shown here use Bash shell commands. On Windows, you can use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/about#what-is-wsl-2) to run Bash.
+
+1. [OpenSSL](https://github.com/openssl/openssl#download)
+
 1. Generate a CA self-signed cert
 
    > :warning: WARNING
@@ -113,7 +122,7 @@ In-cluster components:
    export K8S_RBAC_AAD_PROFILE_TENANTID=$(az account show --query tenantId --output tsv)
    ```
    > :bulb: Tip: you could execute [scripts](./deploy) to get the following
-   > infrastructure assetsprovisioned. However,for a better experience,
+   > infrastructure assets provisioned. However,for a better experience,
    > we do recommend to execute the following steps manuallly.
 
 1. Create a [new AAD user and group](./aad/aad.azcli) for Kubernetes RBAC purposes
@@ -233,7 +242,7 @@ spec:
 EOF
 
 # Install Traefik ingress controller with Azure CSI Provider to obtain
-# the TLS certificates from Azure KeyVault.
+# the TLS certificates as the in-cluster secret management solution.
 
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/workload/traefik.yaml
 
