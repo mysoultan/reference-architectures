@@ -227,10 +227,7 @@ EOF
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/workload/traefik.yaml
 
 # Wait for Traefik to be ready
-# During the Traefik's pod creation time, aad-pod-identity will need to create the AzureAssignedIdentity for the pod based on the AzureIdentity
-# and AzureIdentityBinding, retrieve token for Azure KeyVault. This process can take time to complete and it's possible
-# for the pod volume mount to fail during this time but the volume mount will eventually succeed.
-# For more information, please refer to https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/pod-identity-mode.md
+# During the Traefik's pod creation time, aad-pod-identity will need to retrieve token for Azure KeyVault. This process can take time to complete and it's possible for the pod volume mount to fail during this time but the volume mount will eventually succeed. For more information, please refer to https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/pod-identity-mode.md
 
 kubectl wait --namespace a0008 --for=condition=ready pod --selector=app.kubernetes.io/name=traefik-ingress-ilb --timeout=90s
 ```
