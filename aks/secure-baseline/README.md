@@ -1,84 +1,71 @@
-<h1 align="center">
-  <br>
-  AKS Contoso Bicycle (Secure Baseline)
-  <br>
-</h1>
+# Azure Kubernetes Service (AKS) Baseline Reference Implementation
 
-This reference implementation shows the recommended architecture for a typical
-organization moving containerized business applications to an AKS cluster
-with security in mind.
+This reference implementation demonstrates the _recommended_ infrastructure architecture for hosting containerized applications on an [AKS cluster](https://azure.microsoft.com/services/kubernetes-service).
 
-This is meant to guide an interdisciplinary team or multiple teams like networking,
-security and development through a fictional process of getting this secure baseline
-infrastructure up and running.
+This is meant to guide an interdisciplinary team or multiple teams like networking, security and development through a fictional process of getting this secure baseline infrastructure deployed.
 
 ## Guidance
 
-This project has a companion set of articles that describe challenges, design patterns, and best practices for a Secure AKS cluster. You can find this article on the Azure Architecture Center:
+This project has a companion set of articles that describe challenges, design patterns, and best practices for a secure AKS cluster. You can find this article on the Azure Architecture Center:
 
 [Baseline architecture for a secure AKS cluster](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/)
 
 ## Architecture
 
-This architecture is mainly concentrated in the AKS cluster identity, secret
-management and keep end-to-end traffic securely.
+This architecture is infrastructure focused, more so than workload focused. It mainly concentrates on the AKS cluster itself, including identity, secret management, and network considerations.
 
-An AKS cluster can be smoothly integrated with other Azure services that will
-deliver observability, provide a network topology thinking about
-a multi-regional growing and keep the in-cluster traffic secure as well.
+The implementation presented here is the minimum recommended _baseline_ for expanded growth of your cluster. This implementation integrates with Azure services that will deliver observability, provide a network topology that will support multi-regional growth, and keep the in-cluster traffic secure as well.
 
-Additionally, GitOps is paramount for the cluster management lifecycle so
-this another key topic that will be also handled as part of this Reference Implementation.
+We recommend customers strongly consider adopting a GitOps process for cluster management. An implementation of this is demonstrated in this reference, using [Flux](https://fluxcd.io).
 
-Contoso Bicycle is a fictional small and fast-growing startup that provides
-online web services to its clientele in the west coast, North America.
-They have no on-premises datacenters and all their containerized line of
-business applications are now about to be orchestrated by a Secure AKS cluster.
+Contoso Bicycle is a fictional small and fast-growing startup that provides online web services to its clientele in the west coast of North America. They have no on-premises datacenters and all their containerized line of business applications are now about to be orchestrated by a secure AKS cluster.
 
-Contoso Bicycle is planning to use the [ASPNET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp)
-as a first experiment that will help them to evaluate and test their new infrastructure.
-This is the only part that is not going to reflect a real-world application.
+This implementation uses the [ASPNET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp) as an example workload. This workload purposefully uninteresting, as it is here exclusively to help you experience the baseline infrastructure.
 
-### Core components that compose this baseline:
+### Core components that compose this baseline
 
-Azure platform:
-1. AKS v1.17.X
-   * System and User nodepool
-   * AKS-managed Azure AD integration
-   * Managed Identities
-   * Azure CNI
-   * Azure Monitor for Containers
-1. Azure Virtual Networks
-1. Azure Application Gateway
-1. AKS-managed Internal Load Balancers
-1. Azure Firewall
+#### Azure platform
 
-In-cluster components:
+* AKS v1.17
+  * System and User nodepool separation
+  * AKS-managed Azure AD integration
+  * Managed Identities
+  * Azure CNI
+  * Azure Monitor for Containers
+* Azure Virtual Networks (hub-spoke)
+* Azure Application Gateway (WAF)
+* AKS-managed Internal Load Balancers
+* Azure Firewall
 
-1. Flux v1.19.0
-1. Traefik Ingress Controller v2.2.1
-1. AAD Pod Identity v1.6.1
-1. Azure KeyVault CSI Provider v0.0.6
-1. Kured v1.4.0
+#### In-cluster OSS components
 
-![](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/images/baseline-network-topology.png)
+* [Flux GitOps Operator](https://fluxcd.io)
+* [Traefik Ingress Controller](https://docs.microsoft.com/azure/dev-spaces/how-to/ingress-https-traefik)
+* [Azure AD Pod Identity](https://github.com/Azure/aad-pod-identity)
+* [Azure KeyVault Secret Store CSI Provider](https://github.com/Azure/secrets-store-csi-driver-provider-azure)
+* [Kured](https://docs.microsoft.com/azure/aks/node-updates-kured)
+
+![TODO, Apply Description](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/images/baseline-network-topology.png)
 
 ## Getting Started
 
-### Pre-Requisites
+### Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, you can create a [free account](https://azure.microsoft.com/free).
-   > Important: the user initiating the deployment process must have the following minimal set of built-in roles:
-   > 1. to deploy the networking assets and the AKS cluster: `
-     * [Contributor](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#contributor) role is required at subcription level to have the ability to create resource groups and place deployments.
-     * [User Access Administrator](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#user-access-administrator) role is required at subscription level since granting access to resources will be required. For more information, please refer to [the Container Insights doc](https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-troubleshoot#authorization-error-during-onboarding-or-update-operation) among other cases that will require such permissions.
-   > 1. to integrate AKS-managed Azure AD: [User Administrator](https://docs.microsoft.com/en-us/azure/active-directory/users-groups-roles/directory-assign-admin-roles#user-administrator-permissions). If you are not part of the `User Administrator` group from the Tenant associated to your Azure subscription, please consider [creating a new one](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-access-create-new-tenant#create-a-new-tenant-for-your-organization).
-1. [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) or try from shell.azure.com by clicking below
 
-   <a href="https://shell.azure.com" title="Launch Azure Cloud Shell"><img name="launch-cloud-shell" src="https://docs.microsoft.com/azure/includes/media/cloud-shell-try-it/launchcloudshell.png" /></a>
+   > Important: the user initiating the deployment process must have the following minimal set of roles:
+   >
+   > * [Contributor role](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#contributor) is required at the subscription level to have the ability to create resource groups and perform deployments.
+   > * [User Access Administrator role](https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#user-access-administrator) is required at the subscription level since granting RBAC access to resources will be required.
+   >   * One such example is detailed in the [Container Insights documentation](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-troubleshoot#authorization-error-during-onboarding-or-update-operation).
+   > * Azure AD [User Administrator](https://docs.microsoft.com/azure/active-directory/users-groups-roles/directory-assign-admin-roles#user-administrator-permissions).
+   >   * If you are not part of the User Administrator group in the tenant associated to your Azure subscription, please consider [creating a new tenant](https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-access-create-new-tenant#create-a-new-tenant-for-your-organization) to use while evaluating this implementation.
 
-1. [Register the AAD-V2 feature for AKS-managed Azure AD](https://docs.microsoft.com/en-us/azure/aks/managed-aad#before-you-begin)
+1. [Azure CLI installed](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) or try from Azure Cloud Shell by clicking below.
+[![Launch Azure Cloud Shell](https://docs.microsoft.com/azure/includes/media/cloud-shell-try-it/launchcloudshell.png)](https://shell.azure.com)
+1. [Register the AAD-V2 feature for AKS-managed Azure AD](https://docs.microsoft.com/azure/aks/managed-aad#before-you-begin) in your subscription.
 1. Clone or download this repo locally.
+
    ```bash
    git clone https://github.com/mspnp/reference-architectures.git && \
    cd reference-architectures/aks/secure-baseline
@@ -86,120 +73,95 @@ In-cluster components:
 
    > :bulb: Tip: The deployment steps shown here use Bash shell commands. On Windows, you can use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/about#what-is-wsl-2) to run Bash.
 
-1. [OpenSSL](https://github.com/openssl/openssl#download)
+1. [OpenSSL](https://github.com/openssl/openssl#download) to generate self-signed certs used in this implementation.
 
 ### Acquire the Contoso Bicycle CA certificates
 
-1. Generate a CA self-signed cert
+1. Generate a CA self-signed TLS cert
 
-   > Contoso Bicycle needs to buy CA certificates, they preference is to
-   > own two different TLS certificates. The first one is going to be serve
-   > in front of the Azure Application Gateway and another one at the
-   > Ingress Controller level. This is something that can be prefectly achieved
-   > when configuring Azure Application Gateway End-to-end TLS encryption.
+   > Contoso Bicycle needs to buy CA certificates, their preference is to use two different TLS certificates. The first one is going to be a user-facing EV cert to serve in front of the Azure Application Gateway and another one a standard cert at the Ingress Controller level which will not be user facing.
 
    > :warning: WARNING
-   > Do not use the certificates created by these scripts for production. The certificates are provided for demonstration purposes only. For your production cluster, use your security best practices for digital certificates creation and lifetime management.
-   > Self-signed certificates are not trusted by default and they can be difficult to maintain. Also, they may use outdated hash and cipher suites that may not be strong. For better security, purchase a certificate signed by a well-known certificate authority.
+   > Do not use the certificates created by these scripts. The self-signed certificates are provided for ease of illustration purposes only. For your cluster, use your organization's requirements for procurement and lifetime management of TLS certificates.
 
-   Cluster Ingress Controller Certificate: `*.aks-ingress.contoso.com`
+   Cluster Ingress Controller Wildcard Certificate: `*.aks-ingress.contoso.com`
 
    ```bash
-   openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-         -out traefik-ingress-internal-aks-ingress-contoso-com-tls.crt \
-         -keyout traefik-ingress-internal-aks-ingress-contoso-com-tls.key \
-         -subj "/CN=*.aks-ingress.contoso.com/O=Contoso Aks Ingress" && \
+   openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out traefik-ingress-internal-aks-ingress-contoso-com-tls.crt -keyout traefik-ingress-internal-aks-ingress-contoso-com-tls.key -subj "/CN=*.aks-ingress.contoso.com/O=Contoso Aks Ingress"
    rootCertWilcardIngressController=$(cat traefik-ingress-internal-aks-ingress-contoso-com-tls.crt | base64 -w 0)
    ```
 
    Azure Application Gateway Certificate: `bicycle.contoso.com`
 
    ```bash
-   openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-          -out appgw.crt \
-          -keyout appgw.key \
-          -subj "/CN=bicycle.contoso.com/O=Contoso Bicycle" && \
-   openssl pkcs12 -export -out appgw.pfx -in appgw.crt -inkey appgw.key -passout pass: && \
+   openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out appgw.crt -keyout appgw.key -subj "/CN=bicycle.contoso.com/O=Contoso Bicycle"
+   openssl pkcs12 -export -out appgw.pfx -in appgw.crt -inkey appgw.key -passout pass:
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
 
 ### Create the Secure AKS cluster
 
-1. Query your tenant ids
+1. Query your tenant id
+
    ```bash
    export TENANT_ID=$(az account show --query tenantId --output tsv)
 
-   # Login into the tenant you are User Admistrator. Re-use the TENANT_ID
+   # Login into the tenant where you are a User Administrator. Re-use the TENANT_ID
    # env var if your are User Administrator from the Azure subscription tenant
    az login --tenant <tenant-id-with-user-admin-permissions> --allow-no-subscriptions
 
    export K8S_RBAC_AAD_PROFILE_TENANTID=$(az account show --query tenantId --output tsv)
    ```
-   > :bulb: Tip: you could skip the full narrative and execute [scripts](./deploy)
-   > to get the all the infrastructure assets from this section provisioned.
-   > However, we do recommend to execute the following steps manuallly for a
-   > better experience.
+
+   > :bulb: You could skip the full narrative and execute [scripts](./deploy) to get the all the infrastructure assets from this section provisioned. However, we do recommend to execute the following steps manually for a more complete understanding.
 
 1. Create a [new AAD user and group](./aad/aad.azcli) for Kubernetes RBAC purposes
-   > :bulb: Tip: execute this step from VSCode for a better experience. Discard
-   > this if you are using Azure Cloud Shell
-1. Provision [a regional hub and spoke virtual networks](./networking/network-deploy.azcli)
-   > :bulb: Tip: execute this step from VSCode for a better experience. Discard
-   > this if you are using Azure Cloud Shell
-1. create [the BU 0001's app team secure AKS cluster (ID: A0008)](./cluster-deploy.azcli)
-   > :bulb: Tip: execute this step from VSCode for a better experience
+   > :bulb: You can execute `.azcli` files from Visual Studio Code.
+1. Provision [a regional hub and spoke virtual network](./networking/network-deploy.azcli)
+1. Create [the baseline AKS cluster](./cluster-deploy.azcli)
 
 ### Flux as the GitOps solution
 
-   > The Flux's operator user from the Gitops team wants to deploy Flux
-   > for the Secure AKS Cluster (Application ID: 0008 under the BU001).
-   > But before executing this action, this user  checks for open PRs againts the
-   > cluster's IaaC git repository looking for authored Kubernets manifest files coming from
-   > the Azure AD team Admin team or any other. After merging all the PRs, the FLux's operator
-   > can procceed with the deployment. The Kubernetes namespace
-   > `cluster-baseline-settings` the desired logical division of the cluster
-   > to home Flux and any other baseline setting among others:
-   >   - Cluster Role Bindings for the AKS-managed Azure AD integration
-   >   - AAD Pod Identity
-   >   - CSI driver and Azure KeyVault CSI Provider
-   >   - the App team (Application ID: 0008) namespace named a0008
+GitOps allows a team to author Kubernetes manifest files, persist them in their git repo, and have them automatically apply to their cluster as changes occur.  This reference implementation is focused on the baseline cluster, so Flux is managing cluster-level concerns (distinct from workload-level concerns, which would be possible, and can be done by additional Flux operators). The namespace `cluster-baseline-settings` will be used to provide a logical division of the cluster configuration from workload configuration.  Examples of manifests that are applied:
 
-1. Install kubectl 1.18 or later
+* Cluster Role Bindings for the AKS-managed Azure AD integration
+* AAD Pod Identity
+* CSI driver and Azure KeyVault CSI Provider
+* the App team (Application ID: 0008) namespace named a0008
+
+1. Install kubectl 1.18 or newer (`kubctl` supports +/-1 kubernetes version)
+
    ```bash
    sudo az aks install-cli
-
-   # ensure you got a version 1.18 or greater
    kubectl version --client
    ```
-1. Get AKS Secure cluster  name
+
+1. Get the cluster name
+
    ```bash
    export AKS_CLUSTER_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksClusterName.value -o tsv)
    ```
-1. Get AKS Kubeconfig Credntials
+
+1. Get AKS kubectl credentials
+
    ```bash
    az aks get-credentials -n $AKS_CLUSTER_NAME -g rg-bu0001a0008 --admin
    ```
+
 1. Deploy Flux
+
    ```bash
    kubectl create namespace cluster-baseline-settings
    kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/cluster-baseline-settings/flux.yaml
-   kubectl wait --namespace cluster-baseline-settings \
-     --for=condition=ready pod \
-     --selector=app.kubernetes.io/name=flux \
-     --timeout=90s
+   kubectl wait --namespace cluster-baseline-settings --for=condition=ready pod --selector=app.kubernetes.io/name=flux --timeout=90s
    ```
 
 ### Traefik Ingress Controller with Azure KeyVault CSI integration
 
-> The app team knows that sooner rather than later they will need
-> to expose their backend services outside their AKS cluster. Therefore,
-> they are tasked to deploy an Ingress Controller and their preference is Traefik.
-> They want to manage their secrets in a very secure manner, so they opted to use
-> the Azure KeyVault CSI Provider to mount their TLS certificate that
-> happens to be are stored in Azure KeyVault.
+The application is designed to be exposed outside of their AKS cluster. Therefore, an Ingress Controller must be deployed, and Traefik is selected. Since the ingress controller will be exposing their wildcart TLS certificate, they use the Azure KeyVault CSI Provider to mount their TLS certificate managed and stored in Azure KeyVault so Traefik can use it.
 
 ```bash
-# Get the AKS Ingress Controller User Assigned Identity details
+# Get the AKS Ingress Controller Managed Identity details
 export TRAEFIK_USER_ASSIGNED_IDENTITY_RESOURCE_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityResourceId.value -o tsv)
 export TRAEFIK_USER_ASSIGNED_IDENTITY_CLIENT_ID=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.aksIngressControllerUserManageIdentityClientId.value -o tsv)
 
@@ -209,7 +171,7 @@ export KEYVAULT_NAME=$(az deployment group show --resource-group rg-bu0001a0008 
 # Ensure Flux has created the following namespace and then press Ctrl-C
 kubectl get ns a0008 -w
 
-# Create the traefik Azure Identity and the Azure Identity Binding to let
+# Create the Traefik Azure Identity and the Azure Identity Binding to let
 # Azure Active Directory Pod Identity to get tokens on behalf of the Traefik's User Assigned
 # Identity and later on assign them to the Traefik's pod
 cat <<EOF | kubectl apply -f -
@@ -233,7 +195,7 @@ spec:
   selector: traefik-ingress-controller
 EOF
 
-# Create a `SecretProviderClasses` resource with with your Azure KeyVault parameters
+# Create a SecretProviderClasses resource with with your Azure KeyVault parameters
 # for the Secrets Store CSI driver.
 cat <<EOF | kubectl apply -f -
 apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
@@ -270,44 +232,33 @@ kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures
 # for the pod volume mount to fail during this time but the volume mount will eventually succeed.
 # For more information, please refer to https://github.com/Azure/secrets-store-csi-driver-provider-azure/blob/master/docs/pod-identity-mode.md
 
-kubectl wait --namespace a0008 \
-  --for=condition=ready pod \
-  --selector=app.kubernetes.io/name=traefik-ingress-ilb \
-  --timeout=90s
+kubectl wait --namespace a0008 --for=condition=ready pod --selector=app.kubernetes.io/name=traefik-ingress-ilb --timeout=90s
 ```
 
-### The ASPNET Core Docker sample web app
+### The ASP.NET Core Docker sample web app
 
-> The app team is about to conclude this journey, but they need an app to test
-> their new infrastructure blocks. For this task they picked out the
-> [ASPNET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp).
-> Addittionally, they will include as part of the desired configuration for it
-> some of the following concepts:
-> - Ingress resource object
-> - Network Policy to allow Ingress Controller establish connection with the app
+The app team is about to conclude this journey, but they need an app to test their new infrastructure. For this task they picked out the venerable [ASP.NET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp). Additionally, they will include as part of the desired configuration for it some of the following concepts:
+
+* Ingress resource object
+* Network Policy to allow Ingress Controller establish connection with the app
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/workload/aspnetapp.yaml
 
-# The ASPNET Core Docker sample web app is all setup. Wait until is ready to process requests running:
-kubectl wait --namespace a0008 \
-  --for=condition=ready pod \
-  --selector=app.kubernetes.io/name=aspnetapp \
-  --timeout=90s
+# The ASP.NET Core Docker sample web app is all setup. Wait until is ready to process requests running:
+kubectl wait --namespace a0008 --for=condition=ready pod --selector=app.kubernetes.io/name=aspnetapp --timeout=90s
 
 # In this momment your Ingress Controller (Traefik) is reading your Ingress
 # resource object configuration, updating its status and creating a router to
 # fulfill the new exposed workloads route.
 # Please take a look at this and notice that the Address is set with the Internal Load Balancer Ip from
 # the configured subnet
-
 kubectl get ingress aspnetapp-ingress -n a0008
 
 # Validate the router to the workload is configured, SSL offloading and allowing only known Ips
 # Please notice only the Azure Application Gateway is whitelisted as known client for
 # the workload's router. Therefore, please expect a Http 403 response
 # as a way to probe the router has been properly configured
-
 kubectl -n a0008 run -i --rm --tty curl --image=curlimages/curl -- sh
 curl --insecure -k -I --resolve bu0001a0008-00.aks-ingress.contoso.com:443:10.240.4.4 https://bu0001a0008-00.aks-ingress.contoso.com
 exit 0
@@ -315,31 +266,28 @@ exit 0
 
 ### Test the web app
 
-> The app team conducts a final acceptance test to be sure that traffic is
-> flowing end-to-end as expected, so they place a request against the Azure
-> Application Gateway
+The app team conducts a final acceptance test to be sure that traffic is flowing end-to-end as expected, so they place a request against the Azure Application Gateway endpoint.
 
 ```bash
-# query the BU 0001's Azure Application Gateway Public Ip
-
+# query the Azure Application Gateway Public Ip
 export APPGW_PUBLIC_IP=$(az deployment group show --resource-group rg-enterprise-networking-spokes -n spoke-BU0001A0008 --query properties.outputs.appGwPublicIpAddress.value -o tsv)
 ```
 
-1. Map the Azure Application Gateway public ip address to the application domain names. To do that, please open your hosts file (C:\windows\system32\drivers\etc\hosts or /etc/hosts) and add the following record in local host file:
-   \${APPGW_PUBLIC_IP} bicycle.contoso.com
+1. Map the Azure Application Gateway public ip address to the application domain name. To do that, please open your hosts file (`C:\windows\system32\drivers\etc\hosts` or `/etc/hosts`) and add the following record in local host file:
+`${APPGW_PUBLIC_IP} bicycle.contoso.com`
 
-1. In your browser navigate the site anyway (A warning will be present)
-   https://bicycle.contoso.com/
+1. In your browser, go to <https://bicycle.contoso.com>. A TLS warning will be present, due to using a self-signed cert.
 
 ## Clean up
 
-> Once the test phase is carried out, the actual Contoso Bicycle line of
-> business application ID 0008 could be deployed to its new AKS cluster for
-> the Business Unit 001
+To delete all Azure resources associated with this reference implementation, you'll need to delete the three resource groups created. Also if any temporary changes were made to Azure AD or Azure RBAC permissions consider removing those as well.
 
 ```bash
-az group delete -n rg-bu0001a0008 --yes && \
-az group delete -n rg-enterprise-networking-spokes --yes && \
-az group delete -n rg-enterprise-networking-hubs --yes && \
-az keyvault purge --name $KEYVAULT_NAME --location eastus2 --yes
+az group delete -n rg-bu0001a0008 --yes
+az group delete -n rg-enterprise-networking-spokes --yes
+az group delete -n rg-enterprise-networking-hubs --yes
+
+# Because this reference implementation enables soft delete, execute purge so your next
+# test deployment of this implementation doesn't run into a naming conflict.
+az keyvault purge --name ${KEYVAULT_NAME} --location eastus2 --yes
 ```
