@@ -11,3 +11,5 @@ az group delete -n rg-enterprise-networking-hubs --yes
 # test deployment of this implementation doesn't run into a naming conflict.
 az keyvault purge --name ${KEYVAULT_NAME} --location eastus2 --yes
 ```
+
+-> Navigate: [Back to main](./README.md#getting-started)
