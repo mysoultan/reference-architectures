@@ -1,8 +1,8 @@
 # Azure Kubernetes Service (AKS) Baseline Reference Implementation
 
-This reference implementation demonstrates the _recommended_ infrastructure architecture for hosting containerized applications on an [AKS cluster](https://azure.microsoft.com/services/kubernetes-service).
+This reference implementation demonstrates the _recommended_ infrastructure architecture for hosting applications on an [AKS cluster](https://azure.microsoft.com/services/kubernetes-service).
 
-This is meant to guide an interdisciplinary team or multiple teams like networking, security and development through a fictional process of getting this secure baseline infrastructure deployed.
+This is meant to guide an interdisciplinary team or multiple teams like networking, security and development through the process of getting this secure baseline infrastructure deployed.
 
 ## Guidance
 
@@ -12,13 +12,13 @@ This project has a companion set of articles that describe challenges, design pa
 
 ## Architecture
 
-This architecture is infrastructure focused, more so than workload focused. It mainly concentrates on the AKS cluster itself, including identity, secret management, and network considerations.
+This architecture is infrastructure focused, more so than workload. It mainly concentrates on the AKS cluster itself, including identity, post-deployment configuration, secret management, and network considerations.
 
-The implementation presented here is the minimum recommended _baseline_ for expanded growth of your cluster. This implementation integrates with Azure services that will deliver observability, provide a network topology that will support multi-regional growth, and keep the in-cluster traffic secure as well.
+The implementation presented here is the minimum recommended _baseline_ for expanded growth any AKS cluster. This implementation integrates with Azure services that will deliver observability, provide a network topology that will support multi-regional growth, and keep the in-cluster traffic secure as well.
 
 We recommend customers strongly consider adopting a GitOps process for cluster management. An implementation of this is demonstrated in this reference, using [Flux](https://fluxcd.io).
 
-Contoso Bicycle is a fictional small and fast-growing startup that provides online web services to its clientele in the west coast of North America. They have no on-premises datacenters and all their containerized line of business applications are now about to be orchestrated by a secure AKS cluster.
+Contoso Bicycle is a fictional small and fast-growing startup that provides online web services to its clientele in the west coast of North America. They have no on-premises data centers and all their containerized line of business applications are now about to be orchestrated by secure, enterprise-ready AKS clusters.
 
 This implementation uses the [ASPNET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp) as an example workload. This workload purposefully uninteresting, as it is here exclusively to help you experience the baseline infrastructure.
 
@@ -68,7 +68,7 @@ This implementation uses the [ASPNET Core Docker sample web app](https://github.
 1. Clone or download this repo locally.
 
    ```bash
-   git clone https://github.com/mspnp/reference-architectures.git && \
+   git clone https://github.com/mspnp/reference-architectures.git
    cd reference-architectures/aks/secure-baseline
    ```
 
@@ -76,14 +76,13 @@ This implementation uses the [ASPNET Core Docker sample web app](https://github.
 
 1. [OpenSSL](https://github.com/openssl/openssl#download) to generate self-signed certs used in this implementation.
 
-### Acquire the Contoso Bicycle CA certificates
+### Acquire the CA certificates
 
 1. Generate a CA self-signed TLS cert
 
    > Contoso Bicycle needs to buy CA certificates, their preference is to use two different TLS certificates. The first one is going to be a user-facing EV cert to serve in front of the Azure Application Gateway and another one a standard cert at the Ingress Controller level which will not be user facing.
 
-   > :warning: WARNING
-   > Do not use the certificates created by these scripts. The self-signed certificates are provided for ease of illustration purposes only. For your cluster, use your organization's requirements for procurement and lifetime management of TLS certificates.
+   > :warning: Do not use the certificates created by these scripts for actual deployments. The self-signed certificates are provided for ease of illustration purposes only. For your cluster, use your organization's requirements for procurement and lifetime management of TLS certificates, even for development purposes.
 
    Cluster Ingress Controller Wildcard Certificate: `*.aks-ingress.contoso.com`
 
@@ -114,7 +113,7 @@ This implementation uses the [ASPNET Core Docker sample web app](https://github.
    export K8S_RBAC_AAD_PROFILE_TENANTID=$(az account show --query tenantId --output tsv)
    ```
 
-   > :bulb: You could skip the full narrative and execute [scripts](./deploy) to get the all the infrastructure assets from this section provisioned. However, we do recommend to execute the following steps manually for a more complete understanding.
+   > :bulb: You could skip the full narrative and execute [scripts like these](./deploy) to get the all the infrastructure assets from this section provisioned. However, we do recommend you execute the following steps manually for a more complete understanding.
 
 1. Create a [new AAD user and group](./aad/aad.azcli) for Kubernetes RBAC purposes
    > :bulb: You can execute `.azcli` files from Visual Studio Code.
@@ -159,7 +158,7 @@ GitOps allows a team to author Kubernetes manifest files, persist them in their 
 
 ### Traefik Ingress Controller with Azure KeyVault CSI integration
 
-The application is designed to be exposed outside of their AKS cluster. Therefore, an Ingress Controller must be deployed, and Traefik is selected. Since the ingress controller will be exposing their wildcart TLS certificate, they use the Azure KeyVault CSI Provider to mount their TLS certificate managed and stored in Azure KeyVault so Traefik can use it.
+The application is designed to be exposed outside of their AKS cluster. Therefore, an Ingress Controller must be deployed, and Traefik is selected. Since the ingress controller will be exposing a TLS certificate, they use the Azure KeyVault CSI Provider to mount their TLS certificate managed and stored in Azure KeyVault so Traefik can use it.
 
 ```bash
 # Get the AKS Ingress Controller Managed Identity details
@@ -235,7 +234,7 @@ kubectl wait --namespace a0008 --for=condition=ready pod --selector=app.kubernet
 
 ### The ASP.NET Core Docker sample web app
 
-The app team is about to conclude this journey, but they need an app to test their new infrastructure. For this task they picked out the venerable [ASP.NET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp). Additionally, they will include as part of the desired configuration for it some of the following concepts:
+The Contoso app team is about to conclude this journey, but they need an app to test their new infrastructure. For this task they picked out the venerable [ASP.NET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp). Additionally, they will include as part of the desired configuration for it some of the following concepts:
 
 * Ingress resource object
 * Network Policy to allow Ingress Controller establish connection with the app
@@ -289,3 +288,7 @@ az group delete -n rg-enterprise-networking-hubs --yes
 # test deployment of this implementation doesn't run into a naming conflict.
 az keyvault purge --name ${KEYVAULT_NAME} --location eastus2 --yes
 ```
+
+## GitHub Actions
+
+For your reference, a [starter GitHub Actions pipeline](./GitHubAction/AKS-deploy.yml) has been built for your team to consider as part of your IaC solution.
