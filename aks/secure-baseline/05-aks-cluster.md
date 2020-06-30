@@ -1,5 +1,7 @@
 # Create the Secure AKS cluster
 
+## Deploy - Option 2 CLI
+
 1. Create the AKS cluster resource group
    > The app team working on behalf of business unit 0001 (BU001) is looking to create an AKS cluster
    > of the app they are creating (Application ID: 0008). They have worked with the organization's
@@ -14,14 +16,23 @@
    az group create --name rg-bu0001a0008 --location eastus2
    ```
 
+1. Get the AKS cluster spoke vnet id
+
+   > the app team will bring its own vNet. This is the spoke vnet that had been already
+   > provisioned by the network team
+
+   ```bash
+   TARGET_VNET_RESOURCE_ID=$(az deployment group show -g rg-enterprise-networking-spokes -n spoke-BU0001A0008 --query properties.outputs.clusterVnetResourceId.value -o tsv)
+   ```
 1. Create the AKS cluster
    > And then deploy the cluster into it.
 
    ```bash
    # [This takes about 15 minutes.]
-   az deployment group create --resource-group rg-bu0001a0008 --template-file ../../cluster-stamp.json --parameters "@../../azuredeploy.parameters.prod.json"
-   ```
 
+   # before executing this command please edit the
+   az deployment group create --resource-group rg-bu0001a0008 --template-file ./cluster-stamp.json --parameters targetVnetResourceId=$TARGET_VNET_RESOURCE_ID k8sRbacAadProfileAdminGroupObjectID=$K8S_RBAC_AAD_ADMIN_GROUP_OBJECTID k8sRbacAadProfileTenantId=$K8S_RBAC_AAD_PROFILE_TENANTID appGatewayListernerCertificate=$APP_GATEWAY_LISTERNER_CERTIFICATE rootCertWilcardIngressController=$ROOT_CERT_WILCARD_INGRESS_CONTROLLER
+   ```
 1. Import the wildcard certificate for the Ingress Controller to Azure KeyVault
    > Finally the app team wants to import a wildcard certificate `*.aks-ingress.contoso.com`  to AzureKeyVault
    > A while later this certificate is going to be the one served by a Traefik Ingress Controller wich is

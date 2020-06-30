@@ -1,5 +1,14 @@
 # Hub Spoke Network Topology
 
+1. Login back into the Azure subscription tenant
+
+   > the networking team login into the Azure subscription they are used to create
+   > network resources
+
+   ```bash
+   az login --tenant $TENANT_ID
+   ```
+
 1. Create the networking hubs resource group
 
    > The networking team has all their regional networking hubs in the following resource group.

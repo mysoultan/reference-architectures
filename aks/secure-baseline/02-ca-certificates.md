@@ -10,7 +10,7 @@
 
    ```bash
    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out traefik-ingress-internal-aks-ingress-contoso-com-tls.crt -keyout traefik-ingress-internal-aks-ingress-contoso-com-tls.key -subj "/CN=*.aks-ingress.contoso.com/O=Contoso Aks Ingress"
-   rootCertWilcardIngressController=$(cat traefik-ingress-internal-aks-ingress-contoso-com-tls.crt | base64 -w 0)
+   export ROOT_CERT_WILCARD_INGRESS_CONTROLLER=$(cat traefik-ingress-internal-aks-ingress-contoso-com-tls.crt | base64 -w 0)
    ```
 
    Azure Application Gateway Certificate: `bicycle.contoso.com`
@@ -18,7 +18,7 @@
    ```bash
    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out appgw.crt -keyout appgw.key -subj "/CN=bicycle.contoso.com/O=Contoso Bicycle"
    openssl pkcs12 -export -out appgw.pfx -in appgw.crt -inkey appgw.key -passout pass:
-   appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
+   export APP_GATEWAY_LISTERNER_CERTIFICATE=$(cat appgw.pfx | base64 -w 0)
    ```
 ---
 -> Navigate: [Azure Active Directory Integration](./03-aad.md)
