@@ -31,12 +31,26 @@ GitOps allows a team to author Kubernetes manifest files, persist them in their 
    az aks get-credentials -n $AKS_CLUSTER_NAME -g rg-bu0001a0008 --admin
    ```
 
-1. Deploy Flux
+1. Create the Cluster Baseline Settings namespace
+
+   > this namespace is meant to home all the initial cluster configurations that
+   > should precede any other workload
 
    ```bash
    kubectl create namespace cluster-baseline-settings
+   ```
+
+1. Deploy Flux
+
+   ```bash
    kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/cluster-baseline-settings/flux.yaml
+   ```
+
+1. Wait for Flux to be ready before proceeding
+
+   ```bash
    kubectl wait --namespace cluster-baseline-settings --for=condition=ready pod --selector=app.kubernetes.io/name=flux --timeout=90s
    ```
+
 ---
 Next Step: [Workflow Prerequisites](./07-workload-prerequisites.md)
