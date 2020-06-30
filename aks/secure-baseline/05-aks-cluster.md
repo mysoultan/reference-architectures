@@ -1,5 +1,14 @@
 # Create the Secure AKS cluster
 
+## Deploy - Option 1 Azure Portal
+
+use the deploy to azure button to create the cluster from the Azure Portal
+
+[![Deploy to Azure](https://docs.microsoft.com/en-us/azure/templates/media/deploy-to-azure.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmspnp%2Freference-architectures%2Ffcp%2Faks-baseline%2Faks%2Fsecure-baseline%2Fcluster-stamp.json)
+
+---
+-> Navigate: [GitOps](./06-gitops.md)
+
 ## Deploy - Option 2 CLI
 
 1. Create the AKS cluster resource group
