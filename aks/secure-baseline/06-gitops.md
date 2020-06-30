@@ -34,4 +34,4 @@ GitOps allows a team to author Kubernetes manifest files, persist them in their 
    kubectl wait --namespace cluster-baseline-settings --for=condition=ready pod --selector=app.kubernetes.io/name=flux --timeout=90s
    ```
 
--> Nativate: [Secret Managment and Ingress Controller](./05-secret-managment-and-ingress-controller.md)
+-> Navigate: [Secret Managment and Ingress Controller](./07-secret-managment-and-ingress-controller.md)

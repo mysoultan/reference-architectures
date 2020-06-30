@@ -27,4 +27,4 @@ curl --insecure -k -I --resolve bu0001a0008-00.aks-ingress.contoso.com:443:10.24
 exit 0
 ```
 
--> Nativate: [Validation](./07-validation.md)
+-> Navigate: [Validation](./09-validation.md)

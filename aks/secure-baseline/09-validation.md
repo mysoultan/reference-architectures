@@ -12,4 +12,4 @@ export APPGW_PUBLIC_IP=$(az deployment group show --resource-group rg-enterprise
 
 1. In your browser, go to <https://bicycle.contoso.com>. A TLS warning will be present, due to using a self-signed cert.
 
--> Nativate: [Cleanup](./08-cleanup.md)
+-> Navigate: [Cleanup](./10-cleanup.md)

@@ -21,4 +21,4 @@
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
 
--> Nativate: [AKS cluster](./03-aks-cluster.md)
+-> Navigate: [Azure Active Directory Integration](./03-aad.md)

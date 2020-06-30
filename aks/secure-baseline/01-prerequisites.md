@@ -25,4 +25,4 @@
 
 1. [OpenSSL](https://github.com/openssl/openssl#download) to generate self-signed certs used in this implementation.
 
--> Nativate: [Generate the CA certificates](./02-ca-certificates.md)
+-> Navigate: [Generate the CA certificates](./02-ca-certificates.md)

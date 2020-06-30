@@ -49,17 +49,19 @@ This implementation uses the [ASPNET Core Docker sample web app](https://github.
 
 ## Getting Started
 
-from this section on, you can navigate to the first link to get started
-or resume from where you left:
+Please let's this journey by navigating over the `Preresites` section or
+resume from where you've left:
 
 - [ ] [Prerequisites](./01-prerequisites.md)
 - [ ] [Generate the CA certificates](./02-ca-certificates.md)
-- [ ] [AKS cluster](./03-aks-cluster.md)
-- [ ] [GitOps](./04-gitops.md)
-- [ ] [Secret Managment and Ingress Controller](./05-secret-managment-and-ingress-controller.md)
-- [ ] [Workload](./06-workload.md)
-- [ ] [Validation](./07-validation.md)
-- [ ] [Cleanup](./08-cleanup.md)
+- [ ] [Azure Active Directory Integration](./03-aad.md)
+- [ ] [Hub Spoke Network Topology](./04-networking.md)
+- [ ] [AKS cluster](./05-aks-cluster.md)
+- [ ] [GitOps](./06-gitops.md)
+- [ ] [Secret Managment and Ingress Controller](./07-secret-managment-and-ingress-controller.md)
+- [ ] [Workload](./08-workload.md)
+- [ ] [Validation](./09-validation.md)
+- [ ] [Cleanup](./10-cleanup.md)
 
 ## GitHub Actions
 
