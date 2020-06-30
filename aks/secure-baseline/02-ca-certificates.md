@@ -6,14 +6,8 @@
 
    > :warning: Do not use the certificates created by these scripts for actual deployments. The self-signed certificates are provided for ease of illustration purposes only. For your cluster, use your organization's requirements for procurement and lifetime management of TLS certificates, even for development purposes.
 
-   Cluster Ingress Controller Wildcard Certificate: `*.aks-ingress.contoso.com`
-
-   ```bash
-   openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out traefik-ingress-internal-aks-ingress-contoso-com-tls.crt -keyout traefik-ingress-internal-aks-ingress-contoso-com-tls.key -subj "/CN=*.aks-ingress.contoso.com/O=Contoso Aks Ingress"
-   export ROOT_CERT_WILCARD_INGRESS_CONTROLLER=$(cat traefik-ingress-internal-aks-ingress-contoso-com-tls.crt | base64 -w 0)
-   ```
-
-   Azure Application Gateway Certificate: `bicycle.contoso.com`
+   For now let's create the Azure Application Gateway Certificate: `bicycle.contoso.com`.
+   Later the second TLS certificate is going to be generated from the another section using Azure KeyVault.
 
    ```bash
    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -out appgw.crt -keyout appgw.key -subj "/CN=bicycle.contoso.com/O=Contoso Bicycle"

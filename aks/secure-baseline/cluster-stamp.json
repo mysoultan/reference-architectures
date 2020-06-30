@@ -26,12 +26,6 @@
                 "description": "The certificate data for app gateway TLS termination. It is base64"
             }
         },
-        "rootCertWilcardIngressController": {
-            "type": "string",
-            "metadata": {
-                "description": "Certificate public data as trusted root certificates application gateway backend pool. It is base64. In our case, the aks load balancer related to the ingress controller"
-            }
-        },
         "location": {
             "defaultValue": "eastus2",
             "type": "string",
@@ -216,18 +210,6 @@
             }
         },
         {
-            "type": "Microsoft.KeyVault/vaults/secrets",
-            "apiVersion": "2019-09-01",
-            "name": "[concat( variables('keyVaultName') , '/backend-sslcert')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName') )]"
-            ],
-            "properties": {
-                "value": "[parameters('rootCertWilcardIngressController')]",
-                "recoveryLevel": "Purgeable"
-            }
-        },
-        {
             "type": "Microsoft.Network/privateDnsZones",
             "apiVersion": "2018-09-01",
             "name": "aks-ingress.contoso.com",
@@ -303,14 +285,6 @@
                     ],
                     "minProtocolVersion": "TLSv1_2"
                 },
-                "trustedRootCertificates": [
-                    {
-                        "name": "root-cert-wildcard-aks-ingress-contoso",
-                        "properties": {
-                            "keyVaultSecretId": "[concat(reference(variables('keyVaultName')).vaultUri,'secrets/backend-sslcert')]"
-                        }
-                    }
-                ],
                 "gatewayIPConfigurations": [
                     {
                         "name": "apw-ip-configuration",
