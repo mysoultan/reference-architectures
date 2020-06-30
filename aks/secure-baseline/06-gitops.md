@@ -34,4 +34,4 @@ GitOps allows a team to author Kubernetes manifest files, persist them in their 
    kubectl wait --namespace cluster-baseline-settings --for=condition=ready pod --selector=app.kubernetes.io/name=flux --timeout=90s
    ```
 ---
--> Navigate: [Workflow Prerequisites](./07-workload-prerequisites.md)
+Next Step: [Workflow Prerequisites](./07-workload-prerequisites.md)

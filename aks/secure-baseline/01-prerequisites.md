@@ -25,4 +25,4 @@
 
 1. [OpenSSL](https://github.com/openssl/openssl#download) to generate self-signed certs used in this implementation.
 ---
--> Navigate: [Generate the CA certificates](./02-ca-certificates.md)
+Next Step: [Generate the CA certificates](./02-ca-certificates.md)

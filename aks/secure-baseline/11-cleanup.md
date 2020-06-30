@@ -12,4 +12,4 @@ az group delete -n rg-enterprise-networking-hubs --yes
 az keyvault purge --name ${KEYVAULT_NAME} --location eastus2 --yes
 ```
 ---
--> Navigate: [Back to main](./README.md#getting-started)
+End: [back to main](./README.md#getting-started)

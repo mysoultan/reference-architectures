@@ -15,4 +15,4 @@
    export APP_GATEWAY_LISTERNER_CERTIFICATE=$(cat appgw.pfx | base64 -w 0)
    ```
 ---
--> Navigate: [Azure Active Directory Integration](./03-aad.md)
+Next Step: [Azure Active Directory Integration](./03-aad.md)

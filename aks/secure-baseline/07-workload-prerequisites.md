@@ -76,4 +76,4 @@
    az network application-gateway root-cert create -g rg-bu0001a0008 --gateway-name $APP_GATEWAY_NAME --name root-cert-wildcard-aks-ingress-contoso --keyvault-secret $(az keyvault certificate show --vault-name $KEYVAULT_NAME -n traefik-ingress-internal-aks-ingress-contoso-com-tls --query id -o tsv)
    ```
 ---
--> Navigate: [Secret Managment and Ingress Controller](./08-secret-managment-and-ingress-controller.md)
+Next Step: [Secret Managment and Ingress Controller](./08-secret-managment-and-ingress-controller.md)

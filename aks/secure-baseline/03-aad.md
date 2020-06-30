@@ -51,4 +51,4 @@
    az ad group member add --group add-to-bu0001a000800-cluster-admin --member-id $AKS_ADMIN_OBJECTID
    ```
 ---
--> Navigate: [Hub Spoke Network Topology](./04-networking.md)
+Next Step: [Hub Spoke Network Topology](./04-networking.md)

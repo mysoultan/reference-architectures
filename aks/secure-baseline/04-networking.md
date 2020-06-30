@@ -93,4 +93,4 @@
    > is not included in this reference implementation as this is focused on the AKS baseline and not the networking
    > team's CI/CD practices.
 ---
--> Navigate: [AKS cluster](./05-aks-cluster.md)
+Next Step: [AKS cluster](./05-aks-cluster.md)

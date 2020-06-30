@@ -74,4 +74,4 @@ kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures
 kubectl wait --namespace a0008 --for=condition=ready pod --selector=app.kubernetes.io/name=traefik-ingress-ilb --timeout=90s
 ```
 ---
--> Navigate: [Workload](./09-workload.md)
+Next Step: [Workload](./09-workload.md)

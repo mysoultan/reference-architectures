@@ -115,4 +115,4 @@ use the deploy to azure button to create the cluster from the Azure Portal
    az network application-gateway root-cert create -g rg-bu0001a0008 --gateway-name $APP_GATEWAY_NAME --name root-cert-wildcard-aks-ingress-contoso --keyvault-secret $(az keyvault certificate show --vault-name $KEYVAULT_NAME -n traefik-ingress-internal-aks-ingress-contoso-com-tls --query id -o tsv)
    ```
 ---
--> Navigate: [GitOps](./06-gitops.md)
+Next Step: [GitOps](./06-gitops.md)
