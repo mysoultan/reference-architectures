@@ -1,5 +1,11 @@
 # Test the web app
 
+Previously you have deployed an [ASP.NET Core Docker sample web app](./09-workload). This
+section will help you to validate the workload is exposed correctly and
+responding to Http requests.
+
+---
+
 The app team conducts a final acceptance test to be sure that traffic is flowing end-to-end as expected, so they place a request against the Azure Application Gateway endpoint.
 
 ```bash

@@ -1,5 +1,11 @@
 # Workflow Prerequisites
 
+Previously you have configured a [GitOps solution](./06-gitops) for the AKS cluster.
+The following steps will cover the TLS certificate generation using Azure
+KeyVault.
+
+---
+
 ## Generate the Ingress Controller TLS Certificate
 
 1. Obtain the Azure KeyVault details and give the current user permissions to

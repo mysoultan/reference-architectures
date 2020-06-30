@@ -1,10 +1,18 @@
 # Create the Secure AKS cluster
 
+Previously you have provisioned [the hub and spoke vnets](./04-networking). Now it is time to create
+the AKS cluster.
+
+---
+
 ## Deploy - Option 1 Azure Portal
 
 use the deploy to azure button to create the cluster from the Azure Portal
 
 [![Deploy to Azure](https://docs.microsoft.com/en-us/azure/templates/media/deploy-to-azure.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmspnp%2Freference-architectures%2Ffcp%2Faks-baseline%2Faks%2Fsecure-baseline%2Fcluster-stamp.json)
+
+---
+Next Step: [GitOps](./06-gitops.md)
 
 ## Deploy - Option 2 CLI
 

@@ -1,5 +1,11 @@
 # Clean up
 
+Previously you have [validated an end-to-end case scenario](./10-validation). You can follow these steps to
+delete all resources.
+
+---
+
+
 To delete all Azure resources associated with this reference implementation, you'll need to delete the three resource groups created. Also if any temporary changes were made to Azure AD or Azure RBAC permissions consider removing those as well.
 
 ```bash

@@ -1,5 +1,11 @@
 # The ASP.NET Core Docker sample web app
 
+Previously you have deployed an [Ingress Controller and configured its secrets](./08-secret-managment-and-ingress-controller).
+This section is about to deploy a workload for testing purposes.
+
+---
+
+
 The Contoso app team is about to conclude this journey, but they need an app to test their new infrastructure. For this task they picked out the venerable [ASP.NET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp). Additionally, they will include as part of the desired configuration for it some of the following concepts:
 
 * Ingress resource object

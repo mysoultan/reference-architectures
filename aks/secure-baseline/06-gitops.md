@@ -1,5 +1,10 @@
 # Flux as the GitOps solution
 
+Previously you have created [the AKS cluster](./05-aks-cluster). This section is about the cluster
+management configuration.
+
+---
+
 GitOps allows a team to author Kubernetes manifest files, persist them in their git repo, and have them automatically apply to their cluster as changes occur.  This reference implementation is focused on the baseline cluster, so Flux is managing cluster-level concerns (distinct from workload-level concerns, which would be possible, and can be done by additional Flux operators). The namespace `cluster-baseline-settings` will be used to provide a logical division of the cluster configuration from workload configuration.  Examples of manifests that are applied:
 
 * Cluster Role Bindings for the AKS-managed Azure AD integration

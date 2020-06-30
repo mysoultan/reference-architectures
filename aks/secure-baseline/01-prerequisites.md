@@ -1,5 +1,11 @@
 # Prerequisites
 
+the minimun tooling and requirements are getting installed from this sections.
+Follow the instructions to get your environment ready to proceed with the AKS cluster
+creation.
+
+---
+
 1. An Azure subscription. If you don't have an Azure subscription, you can create a [free account](https://azure.microsoft.com/free).
 
    > Important: the user initiating the deployment process must have the following minimal set of roles:

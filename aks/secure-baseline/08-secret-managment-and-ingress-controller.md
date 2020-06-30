@@ -1,5 +1,10 @@
 # Traefik Ingress Controller with Azure KeyVault CSI integration
 
+Previously you have configured [all the Workload Prerequisites](./07-workload-prerequisites). Following this steps the AKS
+cluter can expose its backend services outside the cluster.
+
+---
+
 The application is designed to be exposed outside of their AKS cluster. Therefore, an Ingress Controller must be deployed, and Traefik is selected. Since the ingress controller will be exposing a TLS certificate, they use the Azure KeyVault CSI Provider to mount their TLS certificate managed and stored in Azure KeyVault so Traefik can use it.
 
 ```bash

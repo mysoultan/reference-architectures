@@ -1,5 +1,9 @@
 # Azure Active Directory Integration
 
+Previously you have [acquired the Azure Application Gateway certificate](./02-ca-certificates),
+now execute the following steps to start integrating AKS-managed Azure AD.
+
+---
 > The Contoso Bicycle Azure AD Admin and Security team requires all admin access to
 > AKS clusters be security group based. This applies to the new Secure AKS cluster
 > that is being built for Application ID: a0008 under the BU001 business unit.

@@ -1,5 +1,10 @@
 # Acquire the CA certificates
 
+Previously you have setup all the [Prerequisites](./01-prerequisites), follow the steps below
+to create the Azure Application Gateway TLS certificate.
+
+---
+
 1. Generate a CA self-signed TLS cert
 
    > Contoso Bicycle needs to buy CA certificates, their preference is to use two different TLS certificates. The first one is going to be a user-facing EV cert to serve in front of the Azure Application Gateway and another one a standard cert at the Ingress Controller level which will not be user facing.

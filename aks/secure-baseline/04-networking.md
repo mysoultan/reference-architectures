@@ -1,5 +1,11 @@
 # Hub Spoke Network Topology
 
+Previously you have covered [the Azure AD integration](./03-aad) for this AKS baseline
+reference implementation. The steps below go through the required  networking assets
+to land a new AKS cluster.
+
+---
+
 1. Login back into the Azure subscription tenant
 
    > the networking team login into the Azure subscription they are used to create
