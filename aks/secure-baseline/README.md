@@ -57,10 +57,11 @@ Please start this journey by navigating to the `Preresites` section.
 - [ ] [Hub Spoke Network Topology](./04-networking.md)
 - [ ] [AKS cluster](./05-aks-cluster.md)
 - [ ] [GitOps](./06-gitops.md)
-- [ ] [Secret Managment and Ingress Controller](./07-secret-managment-and-ingress-controller.md)
-- [ ] [Workload](./08-workload.md)
-- [ ] [Validation](./09-validation.md)
-- [ ] [Cleanup](./10-cleanup.md)
+- [ ] [Workload Prerequisites](./07-workload-prerequesites.md)
+- [ ] [Secret Managment and Ingress Controller](./08-secret-managment-and-ingress-controller.md)
+- [ ] [Workload](./09-workload.md)
+- [ ] [Validation](./10-validation.md)
+- [ ] [Cleanup](./11-cleanup.md)
 
 ## GitHub Actions
 
