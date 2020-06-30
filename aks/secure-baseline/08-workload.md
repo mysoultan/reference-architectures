@@ -1,4 +1,4 @@
-### The ASP.NET Core Docker sample web app
+# The ASP.NET Core Docker sample web app
 
 The Contoso app team is about to conclude this journey, but they need an app to test their new infrastructure. For this task they picked out the venerable [ASP.NET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp). Additionally, they will include as part of the desired configuration for it some of the following concepts:
 
@@ -26,5 +26,5 @@ kubectl -n a0008 run -i --rm --tty curl --image=curlimages/curl -- sh
 curl --insecure -k -I --resolve bu0001a0008-00.aks-ingress.contoso.com:443:10.240.4.4 https://bu0001a0008-00.aks-ingress.contoso.com
 exit 0
 ```
-
+---
 -> Navigate: [Validation](./09-validation.md)

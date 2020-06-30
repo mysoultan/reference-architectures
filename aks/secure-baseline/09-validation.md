@@ -1,4 +1,4 @@
-### Test the web app
+# Test the web app
 
 The app team conducts a final acceptance test to be sure that traffic is flowing end-to-end as expected, so they place a request against the Azure Application Gateway endpoint.
 
@@ -11,5 +11,5 @@ export APPGW_PUBLIC_IP=$(az deployment group show --resource-group rg-enterprise
 `${APPGW_PUBLIC_IP} bicycle.contoso.com`
 
 1. In your browser, go to <https://bicycle.contoso.com>. A TLS warning will be present, due to using a self-signed cert.
-
+---
 -> Navigate: [Cleanup](./10-cleanup.md)

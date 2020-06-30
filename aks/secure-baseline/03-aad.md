@@ -1,4 +1,4 @@
-### Azure Active Directory Integration
+# Azure Active Directory Integration
 
 > The Contoso Bicycle Azure AD Admin and Security team requires all admin access to
 > AKS clusters be security group based. This applies to the new Secure AKS cluster
@@ -50,5 +50,5 @@
    ```bash
    az ad group member add --group add-to-bu0001a000800-cluster-admin --member-id $AKS_ADMIN_OBJECTID
    ```
-
+---
 -> Navigate: [Hub Spoke Network Topology](./04-networking.md)

@@ -1,4 +1,4 @@
-### Prerequisites
+# Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, you can create a [free account](https://azure.microsoft.com/free).
 
@@ -24,5 +24,5 @@
    > :bulb: Tip: The deployment steps shown here use Bash shell commands. On Windows, you can use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/about#what-is-wsl-2) to run Bash.
 
 1. [OpenSSL](https://github.com/openssl/openssl#download) to generate self-signed certs used in this implementation.
-
+---
 -> Navigate: [Generate the CA certificates](./02-ca-certificates.md)

@@ -1,4 +1,4 @@
-### Traefik Ingress Controller with Azure KeyVault CSI integration
+# Traefik Ingress Controller with Azure KeyVault CSI integration
 
 The application is designed to be exposed outside of their AKS cluster. Therefore, an Ingress Controller must be deployed, and Traefik is selected. Since the ingress controller will be exposing a TLS certificate, they use the Azure KeyVault CSI Provider to mount their TLS certificate managed and stored in Azure KeyVault so Traefik can use it.
 
@@ -73,5 +73,5 @@ kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures
 
 kubectl wait --namespace a0008 --for=condition=ready pod --selector=app.kubernetes.io/name=traefik-ingress-ilb --timeout=90s
 ```
-
+---
 -> Navigate: [Workload](./08-workload.md)

@@ -1,4 +1,4 @@
-### Flux as the GitOps solution
+# Flux as the GitOps solution
 
 GitOps allows a team to author Kubernetes manifest files, persist them in their git repo, and have them automatically apply to their cluster as changes occur.  This reference implementation is focused on the baseline cluster, so Flux is managing cluster-level concerns (distinct from workload-level concerns, which would be possible, and can be done by additional Flux operators). The namespace `cluster-baseline-settings` will be used to provide a logical division of the cluster configuration from workload configuration.  Examples of manifests that are applied:
 
@@ -33,5 +33,5 @@ GitOps allows a team to author Kubernetes manifest files, persist them in their 
    kubectl apply -f https://raw.githubusercontent.com/mspnp/reference-architectures/master/aks/secure-baseline/cluster-baseline-settings/flux.yaml
    kubectl wait --namespace cluster-baseline-settings --for=condition=ready pod --selector=app.kubernetes.io/name=flux --timeout=90s
    ```
-
+---
 -> Navigate: [Secret Managment and Ingress Controller](./07-secret-managment-and-ingress-controller.md)

@@ -49,8 +49,7 @@ This implementation uses the [ASPNET Core Docker sample web app](https://github.
 
 ## Getting Started
 
-Please let's this journey by navigating over the `Preresites` section or
-resume from where you've left:
+Please start this journey by navigating to the `Preresites` section.
 
 - [ ] [Prerequisites](./01-prerequisites.md)
 - [ ] [Generate the CA certificates](./02-ca-certificates.md)

@@ -1,4 +1,4 @@
-### Create the Secure AKS cluster
+# Create the Secure AKS cluster
 
 1. Create the AKS cluster resource group
    > The app team working on behalf of business unit 0001 (BU001) is looking to create an AKS cluster
@@ -33,5 +33,5 @@
    cat traefik-ingress-internal-aks-ingress-contoso-com-tls.crt traefik-ingress-internal-aks-ingress-contoso-com-tls.key > traefik-ingress-internal-aks-ingress-contoso-com-tls.pem
    az keyvault certificate import --vault-name $KEYVAULT_NAME -f traefik-ingress-internal-aks-ingress-contoso-com-tls.pem -n traefik-ingress-internal-aks-ingress-contoso-com-tls
    ```
-
+---
 -> Navigate: [GitOps](./06-gitops.md)

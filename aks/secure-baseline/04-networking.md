@@ -1,4 +1,4 @@
-### Hub Spoke Network Topology
+# Hub Spoke Network Topology
 
 1. Create the networking hubs resource group
 
@@ -83,5 +83,5 @@
    > Note: Hubs and Spokes are controlled by the Networking Team's GitHub actions pipelines. This automation
    > is not included in this reference implementation as this is focused on the AKS baseline and not the networking
    > team's CI/CD practices.
-
+---
 -> Navigate: [AKS cluster](./05-aks-cluster.md)

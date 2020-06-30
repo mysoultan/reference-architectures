@@ -1,4 +1,4 @@
-### Acquire the CA certificates
+# Acquire the CA certificates
 
 1. Generate a CA self-signed TLS cert
 
@@ -20,5 +20,5 @@
    openssl pkcs12 -export -out appgw.pfx -in appgw.crt -inkey appgw.key -passout pass:
    appGatewayListernerCertificate=$(cat appgw.pfx | base64 -w 0)
    ```
-
+---
 -> Navigate: [Azure Active Directory Integration](./03-aad.md)
