@@ -101,20 +101,24 @@ We have provided some sample deployment scripts that you could adapt for your ow
 
 ## Advanced topics
 
-This reference implementation intentionally falls short of covering many "end to end" scenarios. For example topics like the following are not addressed:
+This reference implementation intentionally does not covering more advanced scenarios. For example topics like the following are not addressed:
 
 * Cluster lifecycle management with regard to your SDLC
 * Workload SDLC integration (including concepts like DevSpaces, advanced deployment techniques, etc)
 * Mapping decisions to CIS controls
 * Container security
 * Multi-region clusters
-* Private Kubernetes API Server
+* Cluster-contained state (PVC, etc)
+* [Private Kubernetes API Server](https://docs.microsoft.com/azure/aks/private-clusters)
+* [Terraform](https://docs.microsoft.com/azure/developer/terraform/create-k8s-cluster-with-tf-and-aks)
+* [Bedrock](https://github.com/microsoft/bedrock)
+* [dapr](https://github.com/dapr/dapr)
 
-Keep watching this space, as we intend to build out reference implementation guidance on topics such as these.
+Keep watching this space, as we intend to build out reference implementation guidance on topics such as these so that you can extend this baseline and add to it, solving for specific requirements like these.
 
 ## Kubernetes ecosystem acknowledgement
 
-Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on platform features, OSS solutions, support channels, and processes. The takeaway from this reference implementation is the process followed, the reasoning behind the choices, and **ultimately we encourage this to be place for you to start conversations within your own team/organization on where you go from here**. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your users.
+Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on platform features, OSS solutions, support channels, and processes. The takeaway from this reference implementation is the process followed, the reasoning behind the choices, a consistent reference resource, and **ultimately we encourage this to be place for you to start conversations within your own team/organization on where you go from here**. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your users.
 
 ## Related documentation
 
