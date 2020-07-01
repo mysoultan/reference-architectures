@@ -51,47 +51,47 @@ A deployment of AKS-hosted workloads typically has a separation of prerequisites
 
 Please start this journey in the **Preparing for the cluster** section.
 
-### Preparing for the cluster
+### 1. Preparing for the cluster
 
 There are considerations that must be addressed before you start deploying your cluster. Do I have enough permissions in my subscription and AD tenant to do a deployment of this size? How much of this will be handled by my team directly vs having another team be responsible?
 
 * [ ] Begin by ensuring you [install and meet the prerequisites](./01-prerequisites.md).
-* [ ] Plan your [Azure Active Directory integration](./02-aad.md).
+* [ ] [Plan your Azure Active Directory integration](./02-aad.md)
 
 Now you're ready to think about the networking, see **Build target network**.
 
-### Build target network
+### 2. Build target network
 
 Microsoft's recommended baseline for a secure, baseline cluster is one in which you deploy it into a carefully planned network, sized appropriately for your needs. Organizations typically favor a traditional hub-spoke model. This may be handled by your team, or a networking team in your organization.
 
-* [ ] Build out the [hub-spoke network](./03-networking.md) for the cluster.
+* [ ] [Build the hub-spoke network](./03-networking.md)
 
 Now you can move on to **Deploying the cluster**.
 
-### Deploying the cluster
+### 3. Deploying the cluster
 
 This is the heart of the guidance in this reference implementation; paired with strong recommendations on network topology found in the prior section. Here you will lay out the the Azure resources for your cluster. This includes not only the AKS service, but adjacent services such as WAF, Azure Monitor, Azure Container Registry, and Azure Key Vault. Also critical is that the cluster is placed under GitOps.
 
-* [ ] Procure [client-facing TLS Certificate](./04-client-tls.md).
-* [ ] Deploy the [AKS cluster and supporting services](./04-aks-cluster.md).
-* [ ] Place the cluster under [GitOps management](./05-gitops.md).
+* [ ] [Procure client-facing TLS Certificate](./04-client-tls.md)
+* [ ] [Deploy the AKS cluster and supporting services](./04-aks-cluster.md)
+* [ ] [Place the cluster under GitOps management](./05-gitops.md)
 
 We perform the prior steps manually here, for you to understand the involved components, you should orchestrate the prior two steps using your CI/CD pipeline, as you would any infrastructure as code (IaC). We have included [a starter GitHub workflow](./TODO) that demonstrates this.
 
-### Deploy your workload
+### 4. Deploy your workload
 
 While the focus of this implementation is the infrastructure, without a workload deployed to the cluster it will be hard to see how these decisions come together to work as an reliable application platform for business. The deployment of this workload would typically follow a CI/CD pattern and may involve even more advanced deployment strategies (blue/green, etc). The following steps represent a manual deployment, suitable for illustration purposes of this infrastructure.
 
-* [ ] Just like the cluster, there are some [workload prerequisites](./06-workload-prerequisites.md) to address.
-* [ ] Generate [internal TLS certificate and deploy ingress solution](./07-secret-managment-and-ingress-controller.md).
-* [ ] Deploy the [workload](./08-workload.md).
-* [ ] [Validation](./09-validation.md) <== TODO, should this be part of the deploy workload step?
+* [ ] Just like the cluster, there are [workload prerequisites to address](./06-workload-prerequisites.md)
+* [ ] [Generate internal TLS certificate and deploy ingress solution](./07-secret-managment-and-ingress-controller.md)
+* [ ] [Deploy the workload](./08-workload.md)
+* [ ] [Perform end-to-end deployment validation](./09-validation.md) <== TODO, should this be part of the deploy workload step?
 
 ## Clean up resources
 
 Most of the Azure resources deployed in the prior steps will incur ongoing charges unless removed.
 
-* [ ] When you are done exploring this reference implementation, [cleanup all resources](./10-cleanup.md).
+* [ ] [Cleanup all resources](./10-cleanup.md).
 
 ## Deployment alternatives
 
