@@ -115,7 +115,7 @@ This reference implementation intentionally does not cover more advanced scenari
 * [Bedrock](https://github.com/microsoft/bedrock)
 * [dapr](https://github.com/dapr/dapr)
 
-Keep watching this space (Star this repository), as we intend to build out reference implementation guidance on topics such as these so that you can extend this baseline and add to it, solving for specific requirements like these.
+Keep watching this space, as we build out reference implementation guidance on topics such as these. Further guidance delivered will use this baseline AKS implementation as their starting point. If you would like to contribute or suggest a pattern built on this baseline, [please get in touch](../../../CONTRIBUTING.md).
 
 ## Final thoughts
 
