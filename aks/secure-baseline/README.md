@@ -21,11 +21,11 @@ Finally, this implementation uses the [ASP.NET Core Docker sample web app](https
 #### Azure platform
 
 * AKS v1.17
-  * System and User nodepool separation
-  * AKS-managed Azure AD integration
+  * System and User [node pool separation](https://docs.microsoft.com/azure/aks/use-system-pools)
+  * [AKS-managed Azure AD](https://docs.microsoft.com/azure/aks/managed-aad)
   * Managed Identities
   * Azure CNI
-  * Azure Monitor for Containers
+  * [Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-overview)
 * Azure Virtual Networks (hub-spoke)
 * Azure Application Gateway (WAF)
 * AKS-managed Internal Load Balancers
@@ -108,8 +108,8 @@ This reference implementation intentionally does not cover more advanced scenari
 * Multiple (related or unrelated) workloads owned by the same team
 * Multiple workloads owned by disparate teams (AKS as a shared platform in your organization)
 * Cluster-contained state (PVC, etc)
-* Windows nodepools
-* Scale-to-zero nodepools and event-based scaling (KEDA)
+* Windows node pools
+* Scale-to-zero node pools and event-based scaling (KEDA)
 * [Private Kubernetes API Server](https://docs.microsoft.com/azure/aks/private-clusters)
 * [Terraform](https://docs.microsoft.com/azure/developer/terraform/create-k8s-cluster-with-tf-and-aks)
 * [Bedrock](https://github.com/microsoft/bedrock)
@@ -119,7 +119,7 @@ Keep watching this space (Star this repository), as we intend to build out refer
 
 ## Final thoughts
 
-Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on Azure platform features, OSS solutions, support channels, regulatory compliance, and operational processes. The takeaway from this reference implementation is the process followed, the reasoning behind the choices, to be reference resource, and **ultimately we encourage this to be place for you to _start_ conversations within your own team/organization on where you go from here. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your customers.**
+Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on Azure platform features, OSS solutions, support channels, regulatory compliance, and operational processes. The takeaways from this reference implementation are the process followed, the reasoning behind the choices, to be reference resource, and ultimately **we encourage this to be place for you to _start_ conversations within your own team/organization on where you go from here. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your customers.**
 
 ## Related documentation
 
