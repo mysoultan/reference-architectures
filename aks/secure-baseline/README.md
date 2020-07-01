@@ -93,7 +93,7 @@ Now that the cluster is deployed, your sample workload is deployed; now it's tim
 
 Most of the Azure resources deployed in the prior steps will incur ongoing charges unless removed.
 
-* [ ] [Cleanup all resources](./10-cleanup.md).
+* [ ] [Cleanup all resources](./10-cleanup.md)
 
 ## Deployment alternatives
 
@@ -103,9 +103,9 @@ We have provided some sample deployment scripts that you could adapt for your ow
 
 This reference implementation intentionally does not covering more advanced scenarios. For example topics like the following are not addressed:
 
-* Cluster lifecycle management with regard to your SDLC
-* Workload SDLC integration (including concepts like DevSpaces, advanced deployment techniques, etc)
-* Mapping decisions to CIS controls
+* Cluster lifecycle management with regard to SDLC and GitOps
+* Workload SDLC integration (including concepts like [DevSpaces](https://docs.microsoft.com/azure/dev-spaces/), advanced deployment techniques, etc)
+* Mapping decisions to [CIS benchmark controls](https://www.cisecurity.org/benchmark/kubernetes/)
 * Container security
 * Multi-region clusters
 * Cluster-contained state (PVC, etc)
@@ -118,7 +118,7 @@ Keep watching this space, as we intend to build out reference implementation gui
 
 ## Kubernetes ecosystem acknowledgement
 
-Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on platform features, OSS solutions, support channels, and processes. The takeaway from this reference implementation is the process followed, the reasoning behind the choices, a consistent reference resource, and **ultimately we encourage this to be place for you to start conversations within your own team/organization on where you go from here**. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your users.
+Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on Azure platform features, OSS solutions, support channels, regulatory compliance, and operational processes. The takeaway from this reference implementation is the process followed, the reasoning behind the choices, to be a consistent reference resource, and **ultimately we encourage this to be place for you to _start_ conversations within your own team/organization on where you go from here**. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your users.
 
 ## Related documentation
 
