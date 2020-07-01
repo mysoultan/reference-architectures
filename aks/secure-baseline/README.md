@@ -49,7 +49,7 @@ This implementation uses the [ASPNET Core Docker sample web app](https://github.
 
 ## Getting Started
 
-Please start this journey by navigating to the `Preresites` section.
+Please start this journey by navigating to the `Prerequisites` section.
 
 - [ ] [Prerequisites](./01-prerequisites.md)
 - [ ] [Azure Active Directory Integration](./02-aad.md)
