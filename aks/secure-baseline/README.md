@@ -1,6 +1,6 @@
 # Azure Kubernetes Service (AKS) Secure Baseline Reference Implementation
 
-This reference implementation demonstrates the _recommended starting (baseline) infrastructure architecture_ for an [AKS cluster](https://azure.microsoft.com/services/kubernetes-service).  This is implementation and document is meant to guide an interdisciplinary team or multiple distinct teams like networking, security and development through the process of getting this secure baseline infrastructure deployed and understanding the components of it.
+This reference implementation demonstrates the _recommended starting (baseline) infrastructure architecture_ for an [AKS cluster](https://azure.microsoft.com/services/kubernetes-service). This is implementation and document is meant to guide an interdisciplinary team or multiple distinct teams like networking, security and development through the process of getting this secure baseline infrastructure deployed and understanding the components of it.
 
 ## Azure Architecture Center guidance
 
@@ -10,9 +10,7 @@ This project has a companion set of articles that describe challenges, design pa
 
 **This architecture is infrastructure focused**, more so than workload. It mainly concentrates on the AKS cluster itself, including concerns with identity, post-deployment configuration, secret management, and network topologies. It avoids most workload concerns, as those will be highly variable based on your business and technology objectives.
 
-The implementation presented here is the _minimum recommended baseline for most AKS clusters_. This implementation integrates with Azure services that will deliver observability, provide a network topology that will support multi-regional growth, and keep the in-cluster traffic secure as well. This is not a "dev" or a "production" cluster. Instead we want you to start your AKS journey with this baseline infrastructure and then apply your specific scenario and requirements on top of it, pre-production and production.
-
-Much like the cluster itself is managed via declarative Infrastructure as Code (IaC), we recommend customers adopt a GitOps process for inner-cluster configuration management. An implementation of this is demonstrated in this reference, using the Open Sourced Software (OSS) [Flux](https://fluxcd.io).
+The implementation presented here is the _minimum recommended baseline for most AKS clusters_. This implementation integrates with Azure services that will deliver observability, provide a network topology that will support multi-regional growth, and keep the in-cluster traffic secure as well. This architecture should be considered your starting point for pre-production and production use cases.
 
 Throughout the reference implementation, you will see reference to _Contoso Bicycle_. They are a fictional small and fast-growing startup that provides online web services to its clientele on the west coast of North America. They have no on-premises data centers and all their containerized line of business applications are now about to be orchestrated by secure, enterprise-ready AKS clusters. This narrative provides grounding for some implementation details, naming conventions, etc. You should adapt as you see fit.
 
@@ -47,7 +45,7 @@ Finally, this implementation uses the [ASP.NET Core Docker sample web app](https
 
 A deployment of AKS-hosted workloads typically experiences a separation of duties and lifecycle management in the area of prerequisites, the host network, the cluster infrastructure, and finally the workload itself. This reference implementation is similar. Also, be aware our primary purpose is to illustrate the topology and decisions of a baseline cluster. We feel a "step-by-step" flow will help you learn the pieces of the solution and give you insight into the relationship between them. Ultimately, lifecycle/SDLC management of your cluster and its dependencies will depend on your situation (team roles, organizational standards, etc), and will be implemented as appropriate for your needs.
 
-**Please start this learning journey in the _Preparing for the cluster_ section.** If you follow this through the end, you'll have our recommended baseline cluster installed, with an end-to-end sample workload running for you to reference for your own implementation.
+**Please start this learning journey in the _Preparing for the cluster_ section.** If you follow this through the end, you'll have our recommended baseline cluster installed, with an end-to-end sample workload running for you to reference in your own implementation.
 
 ### 1. :rocket: Preparing for the cluster
 
@@ -58,13 +56,13 @@ There are considerations that must be addressed before you start deploying your 
 
 ### 2. Build target network
 
-Microsoft's recommended AKS baseline cluster is one in which you deploy into a carefully planned network; sized appropriately for your needs, and with proper network observability. Organizations typically favor a traditional hub-spoke model, which is reflected here. This may be handled by a distinct networking team in your organization. While this is a standard hub-spoke model, there are fundamental sizing and portioning considerations included that should be understood.
+Microsoft's recommended AKS baseline cluster is one in which you deploy into a carefully planned network; sized appropriately for your needs and with proper network observability. Organizations typically favor a traditional hub-spoke model, which is reflected in this implementation. While this is a standard hub-spoke model, there are fundamental sizing and portioning considerations included that should be understood.
 
 * [ ] [Build the hub-spoke network](./03-networking.md)
 
 ### 3. Deploying the cluster
 
-This is the heart of the guidance in this reference implementation; paired with prior strong recommendations on network topology. Here you will deploy the Azure resources for your cluster. This includes not only the AKS service, but adjacent services such as Azure Application Gateway WAF, Azure Monitor, Azure Container Registry, and Azure Key Vault. Also critical is that the cluster is placed under GitOps orchestration.
+This is the heart of the guidance in this reference implementation; paired with prior network topology guidance. Here you will deploy the Azure resources for your cluster. This includes not only the AKS service, but adjacent services such as Azure Application Gateway WAF, Azure Monitor, Azure Container Registry, and Azure Key Vault. This is also where we place the cluster under GitOps orchestration.
 
 * [ ] [Procure client-facing TLS certificate](./04-client-tls.md)
 * [ ] [Deploy the AKS cluster and supporting services](./04-aks-cluster.md)
@@ -74,7 +72,7 @@ We perform the prior steps manually here, for you to understand the involved com
 
 ### 4. Deploy your workload
 
-While the focus of this implementation is the infrastructure, without a workload deployed to the cluster it will be hard to see how these decisions come together to work as a reliable application platform for your business. The deployment of this workload would typically follow a CI/CD pattern and may involve even more advanced deployment strategies (blue/green, etc). The following steps represent a manual deployment, suitable for illustration purposes of this infrastructure.
+Without a workload deployed to the cluster it will be hard to see how these decisions come together to work as a reliable application platform for your business. The deployment of this workload would typically follow a CI/CD pattern and may involve even more advanced deployment strategies (blue/green, etc). The following steps represent a manual deployment, suitable for illustration purposes of this infrastructure.
 
 * [ ] Just like the cluster, there are [workload prerequisites to address](./06-workload-prerequisites.md)
 * [ ] [Generate internal TLS certificate and deploy ingress solution](./07-secret-managment-and-ingress-controller.md)
@@ -82,7 +80,7 @@ While the focus of this implementation is the infrastructure, without a workload
 
 ### 5. :checkered_flag: Validation
 
-Now that the cluster is deployed, your sample workload is deployed; now it's time to look at how the cluster is functioning.
+Now that the cluster and the sample workload is deployed; now it's time to look at how the cluster is functioning.
 
 * [ ] [Perform end-to-end deployment validation](./09-validation.md)
 * [ ] [Learn about built-in observability](./10-observability.md)
@@ -99,13 +97,14 @@ We have provided some sample deployment scripts that you could adapt for your ow
 
 ## Advanced topics
 
-This reference implementation intentionally does not covering more advanced scenarios. For example topics like the following are not addressed:
+This reference implementation intentionally does not cover more advanced scenarios. For example topics like the following are not addressed:
 
 * Cluster lifecycle management with regard to SDLC and GitOps
 * Workload SDLC integration (including concepts like [DevSpaces](https://docs.microsoft.com/azure/dev-spaces/), advanced deployment techniques, etc)
 * Mapping decisions to [CIS benchmark controls](https://www.cisecurity.org/benchmark/kubernetes/)
 * Container security
 * Multi-region clusters
+* [Advanced regulatory compliance](https://github.com/Azure/sg-aks-workshop) (FinServ)
 * Multiple (related or unrelated) workloads owned by the same team
 * Multiple workloads owned by disparate teams (AKS as a shared platform in your organization)
 * Cluster-contained state (PVC, etc)
@@ -116,11 +115,11 @@ This reference implementation intentionally does not covering more advanced scen
 * [Bedrock](https://github.com/microsoft/bedrock)
 * [dapr](https://github.com/dapr/dapr)
 
-Keep watching this space, as we intend to build out reference implementation guidance on topics such as these so that you can extend this baseline and add to it, solving for specific requirements like these.
+Keep watching this space (Star this repository), as we intend to build out reference implementation guidance on topics such as these so that you can extend this baseline and add to it, solving for specific requirements like these.
 
-## Kubernetes ecosystem acknowledgement
+## Final thoughts
 
-Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on Azure platform features, OSS solutions, support channels, regulatory compliance, and operational processes. The takeaway from this reference implementation is the process followed, the reasoning behind the choices, to be reference resource, and **ultimately we encourage this to be place for you to _start_ conversations within your own team/organization on where you go from here**. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your customers.
+Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on Azure platform features, OSS solutions, support channels, regulatory compliance, and operational processes. The takeaway from this reference implementation is the process followed, the reasoning behind the choices, to be reference resource, and **ultimately we encourage this to be place for you to _start_ conversations within your own team/organization on where you go from here. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your customers.**
 
 ## Related documentation
 
