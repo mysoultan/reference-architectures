@@ -49,9 +49,9 @@ This implementation uses the [ASP.NET Core Docker sample web app](https://github
 
 A deployment of AKS-hosted workloads typically has a separation of duties and lifecycle management in the area of prerequisites, the network, the cluster infrastructure, and finally the workload. This reference implementation is similar. Also, be aware our primary purpose is to illustrate the topology and decisions of a baseline cluster. We feel a "step by step" flow will help you learn the pieces of the solution and give you insight into the relationship between them. Ultimately, lifecycle/SDLC management of your cluster and its dependencies will depend on your situation (team roles, organizational standards, etc), and will need to be implemented as appropriate for your needs.
 
-Please start this learning journey in the **Preparing for the cluster** section. If you follow this through the end, you'll have a our recommended baseline cluster installed, with an end-to-end sample workload running for you to use/reference.
+**Please start this learning journey in the _Preparing for the cluster_ section.** If you follow this through the end, you'll have our recommended baseline cluster installed, with an end-to-end sample workload running for you to reference for your own implementation.
 
-### 1. Preparing for the cluster
+### 1. :rocket: Preparing for the cluster
 
 There are considerations that must be addressed before you start deploying your cluster. Do I have enough permissions in my subscription and AD tenant to do a deployment of this size? How much of this will be handled by my team directly vs having another team be responsible?
 
@@ -82,14 +82,14 @@ While the focus of this implementation is the infrastructure, without a workload
 * [ ] [Generate internal TLS certificate and deploy ingress solution](./07-secret-managment-and-ingress-controller.md)
 * [ ] [Deploy the workload](./08-workload.md)
 
-### 5. Validation
+### 5. :checkered_flag: Validation
 
 Now that the cluster is deployed, your sample workload is deployed; now it's time to look at how the cluster is functioning.
 
 * [ ] [Perform end-to-end deployment validation](./09-validation.md)
 * [ ] [Learn about built-in observability](./10-observability.md)
 
-## Clean up resources
+## :broom: Clean up resources
 
 Most of the Azure resources deployed in the prior steps will incur ongoing charges unless removed.
 
