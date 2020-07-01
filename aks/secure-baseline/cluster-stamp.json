@@ -129,6 +129,9 @@
                         "permissions": {
                             "secrets": [
                                 "get"
+                            ],
+                            "certificates": [
+                                "get"
                             ]
                         }
                     },

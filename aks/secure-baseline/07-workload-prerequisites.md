@@ -21,7 +21,7 @@ KeyVault.
 
    ```bash
    KEYVAULT_NAME=$(az deployment group show --resource-group rg-bu0001a0008 -n cluster-stamp --query properties.outputs.keyVaultName.value -o tsv)
-   az keyvault set-policy --certificate-permissions create -n $KEYVAULT_NAME --upn $(az account show --query user.name -o tsv)
+   az keyvault set-policy --certificate-permissions create list get -n $KEYVAULT_NAME --upn $(az account show --query user.name -o tsv)
    ```
 1. Generate the Cluster Ingress Controller Wildcard Certificate: `*.aks-ingress.contoso.com`
 
@@ -73,18 +73,18 @@ KeyVault.
 1. Query the BU 0001's Azure Application Gateway Name
 
     ```bash
-    export APP_GATEWAY_NAME=$(az deployment group show -g rg-bu0001a0008 -n cluster-stamp-bu0001a0008 --query properties.outputs.agwName.value -o tsv)
+    export APP_GATEWAY_NAME=$(az deployment group show -g rg-bu0001a0008 -n cluster-stamp --query properties.outputs.agwName.value -o tsv)
     ```
 
 1. Configure the trusted root cert
 
    ```bash
-   az network application-gateway root-cert create -g rg-bu0001a0008 --gateway-name $APP_GATEWAY_NAME --name root-cert-wildcard-aks-ingress-contoso --keyvault-secret $(az keyvault certificate show --vault-name $KEYVAULT_NAME -n traefik-ingress-internal-aks-ingress-contoso-com-tls --query id -o tsv)
+   az network application-gateway root-cert create -g rg-bu0001a0008 --gateway-name $APP_GATEWAY_NAME --name root-cert-wildcard-aks-ingress-contoso --keyvault-secret $(az keyvault certificate show --vault-name $KEYVAULT_NAME -n traefik-ingress-internal-aks-ingress-contoso-com-tls --query sid -o tsv)
    ```
 
 1. configure the http settings to use the root cert
    ```bash
-    az network application-gateway http-settings update -g rg-bu0001a0008 --gateway-name $APP_GATEWAY_NAME -n aks-ingress-contoso-backendpool-httpsettings --root-certs root-cert-wildcard-aks-ingress-contoso --protocol Https
-    ```
+   az network application-gateway http-settings update -g rg-bu0001a0008 --gateway-name $APP_GATEWAY_NAME -n aks-ingress-contoso-backendpool-httpsettings --root-certs root-cert-wildcard-aks-ingress-contoso --protocol Https
+   ```
 ---
 Next Step: [Secret Managment and Ingress Controller](./08-secret-managment-and-ingress-controller.md)
