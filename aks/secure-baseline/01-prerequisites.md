@@ -20,10 +20,16 @@ creation.
 
    [![Launch Azure Cloud Shell](https://docs.microsoft.com/azure/includes/media/cloud-shell-try-it/launchcloudshell.png)](https://shell.azure.com)
 1. [Register the AAD-V2 feature for AKS-managed Azure AD](https://docs.microsoft.com/azure/aks/managed-aad#before-you-begin) in your subscription.
-1. Clone or download this repo locally.
+1. Clone, download this repo locally or even better Fork this repository
+
+   > :twisted_rightwards_arrows: Fork: if you have made the call to fork the
+   > AKS Baseline Reference Implementation repo, first of all congratulations
+   > and also please consider replacing the `GITHUB_REPO` env var value with
+   > your own repository url
 
    ```bash
-   git clone https://github.com/mspnp/reference-architectures.git
+   export GITHUB_REPO=https://github.com/mspnp/reference-architectures.git
+   git clone $GITHUB_REPO
    cd reference-architectures/aks/secure-baseline
    ```
 
