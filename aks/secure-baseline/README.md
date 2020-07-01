@@ -45,7 +45,7 @@ This implementation uses the [ASP.NET Core Docker sample web app](https://github
 
 ![TODO, Apply Description](https://docs.microsoft.com/azure/architecture/reference-architectures/containers/aks/secure-baseline/images/baseline-network-topology.png)
 
-## Getting started
+## Deploy the reference implementation
 
 A deployment of AKS-hosted workloads typically has a separation of duties and lifecycle management in the area of prerequisites, the network, the cluster infrastructure, and finally the workload. This reference implementation is similar. Also, be aware our primary purpose is to illustrate the topology and decisions of a baseline cluster. We feel a "step by step" flow will help you learn the pieces of the solution and give you insight into the relationship between them. Ultimately, lifecycle/SDLC management of your cluster and its dependencies will depend on your situation (team roles, organizational standards, etc), and will need to be implemented as appropriate for your needs.
 
