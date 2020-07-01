@@ -8,7 +8,7 @@ This project has a companion set of articles that describe challenges, design pa
 
 ## Architecture
 
-**This architecture is infrastructure focused**, more so than workload. It mainly concentrates on the AKS cluster itself, including concerns with identity, post-deployment configuration, secret management, and network topologies. It avoids most workload concerns, as those will be highly variable based on your business and technology objectives.
+**This architecture is infrastructure focused**, more so than workload. It concentrates on the AKS cluster itself, including concerns with identity, post-deployment configuration, secret management, and network topologies.
 
 The implementation presented here is the _minimum recommended baseline for most AKS clusters_. This implementation integrates with Azure services that will deliver observability, provide a network topology that will support multi-regional growth, and keep the in-cluster traffic secure as well. This architecture should be considered your starting point for pre-production and production use cases.
 
@@ -16,7 +16,7 @@ Throughout the reference implementation, you will see reference to _Contoso Bicy
 
 Finally, this implementation uses the [ASP.NET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp) as an example workload. This workload purposefully uninteresting, as it is here exclusively to help you experience the baseline infrastructure.
 
-### Core components that compose this baseline
+### Core architecture components
 
 #### Azure platform
 
@@ -119,7 +119,7 @@ Keep watching this space (Star this repository), as we intend to build out refer
 
 ## Final thoughts
 
-Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on Azure platform features, OSS solutions, support channels, regulatory compliance, and operational processes. The takeaways from this reference implementation are the process followed, the reasoning behind the choices, to be reference resource, and ultimately **we encourage this to be place for you to _start_ conversations within your own team/organization on where you go from here. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your customers.**
+Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on Azure platform features, OSS solutions, support channels, regulatory compliance, and operational processes. **We encourage this reference implementation to be the place for you to _start_ architectural conversations within your own team; adapting to your specific requirements, and ultimately delivering a solution that delights your customers.**
 
 ## Related documentation
 
