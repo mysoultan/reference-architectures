@@ -93,9 +93,9 @@ Most of the Azure resources deployed in the prior steps will incur ongoing charg
 
 * [ ] [Cleanup all resources](./10-cleanup.md)
 
-## Deployment alternatives
+## Inner-loop development scripts
 
-We have provided some sample deployment scripts that you could adapt for your own purposes while doing a POC/spike on this. Those scripts are found in the [inner-loop-scripts directory](./inner-loop-scripts). They include some additional considerations, and include some additional narrative as well. Consider checking them out. They consolidate most of the walk-through performed above into combined execution steps.
+We have provided some sample deployment scripts that you could adapt for your own purposes while doing a POC/spike on this. Those scripts are found in the [inner-loop-scripts directory](./inner-loop-scripts). They include some additional considerations and may include some additional narrative as well. Consider checking them out. They consolidate most of the walk-through performed above into combined execution steps.
 
 ## Advanced topics
 
