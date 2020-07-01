@@ -16,7 +16,7 @@ The implementation presented here is the _minimum recommended baseline_ for any 
 
 Much like the cluster itself is managed via declarative Infrastructure as Code (IaC), we recommend customers adopt a GitOps process for inner-cluster configuration management. An implementation of this is demonstrated in this reference, using the Open Sourced Software (OSS) [Flux](https://fluxcd.io).
 
-Throughout the reference implementation, you will see reference to Contoso Bicycle.  They are a fictional small and fast-growing startup that provides online web services to its clientele on the west coast of North America. They have no on-premises data centers and all their containerized line of business applications are now about to be orchestrated by secure, enterprise-ready AKS clusters.
+Throughout the reference implementation, you will see reference to _Contoso Bicycle_. They are a fictional small and fast-growing startup that provides online web services to its clientele on the west coast of North America. They have no on-premises data centers and all their containerized line of business applications are now about to be orchestrated by secure, enterprise-ready AKS clusters.
 
 This implementation uses the [ASP.NET Core Docker sample web app](https://github.com/dotnet/dotnet-docker/tree/master/samples/aspnetapp) as an example workload. This workload purposefully uninteresting, as it is here exclusively to help you experience the baseline infrastructure.
 
@@ -47,9 +47,9 @@ This implementation uses the [ASP.NET Core Docker sample web app](https://github
 
 ## Getting started
 
-A deployment of AKS-hosted workloads typically has a separation of prerequisites, the infrastructure, and finally the workload. This reference implementation is similar. Also, be aware while there may seem like a lot of steps, our primary purpose is to illustrate the topology and decisions of a baseline cluster. Lifecycle management of your cluster will depend on your situation (team roles, organizational standards, etc).
+A deployment of AKS-hosted workloads typically has a separation of duties and lifecycle management in the area of prerequisites, the network, the cluster infrastructure, and finally the workload. This reference implementation is similar. Also, be aware our primary purpose is to illustrate the topology and decisions of a baseline cluster. We feel a "step by step" flow will help you learn the pieces of the solution and give you insight into the relationship between them. Ultimately, lifecycle/SDLC management of your cluster and its dependencies will depend on your situation (team roles, organizational standards, etc), and will need to be implemented as appropriate for your needs.
 
-Please start this journey in the **Preparing for the cluster** section.
+Please start this learning journey in the **Preparing for the cluster** section. If you follow this through the end, you'll have a our recommended baseline cluster installed, with an end-to-end sample workload running for you to use/reference.
 
 ### 1. Preparing for the cluster
 
@@ -60,13 +60,13 @@ There are considerations that must be addressed before you start deploying your 
 
 ### 2. Build target network
 
-Microsoft's recommended baseline cluster is one in which you deploy it into a carefully planned network, sized appropriately for your needs, and with proper network observability. Organizations typically favor a traditional hub-spoke model. This may be handled by your team, or a networking team in your organization.
+Microsoft's recommended baseline cluster is one in which you deploy into a carefully planned network; sized appropriately for your needs, and with proper network observability. Organizations typically favor a traditional hub-spoke model, which we reflect here. This may be handled by a distinct networking team in your organization.  While this is a standard hub-spoke model, there are fundamental sizing and portioning considerations included that should be understood.
 
 * [ ] [Build the hub-spoke network](./03-networking.md)
 
 ### 3. Deploying the cluster
 
-This is the heart of the guidance in this reference implementation; paired with strong recommendations on network topology found in the prior section. Here you will lay out the the Azure resources for your cluster. This includes not only the AKS service, but adjacent services such as WAF, Azure Monitor, Azure Container Registry, and Azure Key Vault. Also critical is that the cluster is placed under GitOps.
+This is the heart of the guidance in this reference implementation; paired with prior strong recommendations on network topology. Here you will deploy the Azure resources for your cluster. This includes not only the AKS service, but adjacent services such as Azure Application Gateway WAF, Azure Monitor, Azure Container Registry, and Azure Key Vault. Also critical is that the cluster is placed under GitOps.
 
 * [ ] [Procure client-facing TLS Certificate](./04-client-tls.md)
 * [ ] [Deploy the AKS cluster and supporting services](./04-aks-cluster.md)
@@ -81,7 +81,13 @@ While the focus of this implementation is the infrastructure, without a workload
 * [ ] Just like the cluster, there are [workload prerequisites to address](./06-workload-prerequisites.md)
 * [ ] [Generate internal TLS certificate and deploy ingress solution](./07-secret-managment-and-ingress-controller.md)
 * [ ] [Deploy the workload](./08-workload.md)
-* [ ] [Perform end-to-end deployment validation](./09-validation.md) <== TODO, should this be part of the deploy workload step?
+
+### 5. Validation
+
+Now that the cluster is deployed, your sample workload is deployed; now it's time to look at how the cluster is functioning.
+
+* [ ] [Perform end-to-end deployment validation](./09-validation.md)
+* [ ] [Learn about built-in observability](./10-observability.md)
 
 ## Clean up resources
 
@@ -91,7 +97,7 @@ Most of the Azure resources deployed in the prior steps will incur ongoing charg
 
 ## Deployment alternatives
 
-We have provided some sample deployment scripts that you could adapt for your own purposes while doing a POC/spike on this. Those scripts are found in the [inner-loop-scripts directory](./inner-loop-scripts). They include some additional considerations, and include some additional narrative as well. Consider checking them out. They consolidate the manual, walk-through steps performed above into combined execution steps.
+We have provided some sample deployment scripts that you could adapt for your own purposes while doing a POC/spike on this. Those scripts are found in the [inner-loop-scripts directory](./inner-loop-scripts). They include some additional considerations, and include some additional narrative as well. Consider checking them out. They consolidate most of the walk-through performed above into combined execution steps.
 
 ## Advanced topics
 
@@ -102,12 +108,13 @@ This reference implementation intentionally falls short of covering many "end to
 * Mapping decisions to CIS controls
 * Container security
 * Multi-region clusters
+* Private Kubernetes API Server
 
 Keep watching this space, as we intend to build out reference implementation guidance on topics such as these.
 
 ## Kubernetes ecosystem acknowledgement
 
-Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey you will need to consider when to take dependencies on platform features, OSS solutions, support channels, and processes. The takeaway from this reference implementation is the process followed, the reasoning behind the choices, and ultimately we encourage this to be place for you to start conversations within your own team/organization on where you go from here. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your users.
+Kubernetes is a very flexible platform, giving infrastructure and application operators many choices to achieve their business and technology objectives. At points along your journey, you will need to consider when to take dependencies on platform features, OSS solutions, support channels, and processes. The takeaway from this reference implementation is the process followed, the reasoning behind the choices, and **ultimately we encourage this to be place for you to start conversations within your own team/organization on where you go from here**. Start here, adapt to your specific requirements, and ultimately deliver a solution that delights your users.
 
 ## Related documentation
 
