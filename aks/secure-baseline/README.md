@@ -109,6 +109,8 @@ This reference implementation intentionally does not covering more advanced scen
 * Multiple (related or unrelated) workloads owned by the same team
 * Multiple workloads owned by disparate teams (AKS as a shared platform in your organization)
 * Cluster-contained state (PVC, etc)
+* Windows nodepools
+* Scale-to-zero nodepools and event-based scaling (KEDA)
 * [Private Kubernetes API Server](https://docs.microsoft.com/azure/aks/private-clusters)
 * [Terraform](https://docs.microsoft.com/azure/developer/terraform/create-k8s-cluster-with-tf-and-aks)
 * [Bedrock](https://github.com/microsoft/bedrock)
