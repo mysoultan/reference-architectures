@@ -55,18 +55,14 @@ Please start this journey in the **Preparing for the cluster** section.
 
 There are considerations that must be addressed before you start deploying your cluster. Do I have enough permissions in my subscription and AD tenant to do a deployment of this size? How much of this will be handled by my team directly vs having another team be responsible?
 
-* [ ] Begin by ensuring you [install and meet the prerequisites](./01-prerequisites.md).
+* [ ] Begin by ensuring you [install and meet the prerequisites](./01-prerequisites.md)
 * [ ] [Plan your Azure Active Directory integration](./02-aad.md)
-
-Now you're ready to think about the networking, see **Build target network**.
 
 ### 2. Build target network
 
-Microsoft's recommended baseline for a secure, baseline cluster is one in which you deploy it into a carefully planned network, sized appropriately for your needs. Organizations typically favor a traditional hub-spoke model. This may be handled by your team, or a networking team in your organization.
+Microsoft's recommended baseline cluster is one in which you deploy it into a carefully planned network, sized appropriately for your needs, and with proper network observability. Organizations typically favor a traditional hub-spoke model. This may be handled by your team, or a networking team in your organization.
 
 * [ ] [Build the hub-spoke network](./03-networking.md)
-
-Now you can move on to **Deploying the cluster**.
 
 ### 3. Deploying the cluster
 
@@ -96,6 +92,18 @@ Most of the Azure resources deployed in the prior steps will incur ongoing charg
 ## Deployment alternatives
 
 We have provided some sample deployment scripts that you could adapt for your own purposes while doing a POC/spike on this. Those scripts are found in the [inner-loop-scripts directory](./inner-loop-scripts). They include some additional considerations, and include some additional narrative as well. Consider checking them out. They consolidate the manual, walk-through steps performed above into combined execution steps.
+
+## Advanced topics
+
+This reference implementation intentionally falls short of covering many "end to end" scenarios. For example topics like the following are not addressed:
+
+* Cluster lifecycle management with regard to your SDLC
+* Workload SDLC integration (including concepts like DevSpaces, advanced deployment techniques, etc)
+* Mapping decisions to CIS controls
+* Container security
+* Multi-region clusters
+
+Keep watching this space, as we intend to build out reference implementation guidance on topics such as these.
 
 ## Kubernetes ecosystem acknowledgement
 
