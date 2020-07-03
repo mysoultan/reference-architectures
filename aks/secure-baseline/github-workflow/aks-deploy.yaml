@@ -95,5 +95,13 @@ jobs:
       uses: Azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: ${{steps.aks-cluster.outputs.name}}
+        cluster-name: ${{ steps.aks-cluster.outputs.name }}
         resource-group: ${{ env.RESOURCE_GROUP }}
+
+    # Create the cluster-baseline-settings namespace and deploy Flux into it
+    - name:
+      uses: Azure/k8s-deploy@v1
+      with:
+        manifests: |
+          aks/cluster-baseline-settings/ns-cluster-baseline-settings.yaml
+          aks/cluster-baseline-settings/flux.yaml
