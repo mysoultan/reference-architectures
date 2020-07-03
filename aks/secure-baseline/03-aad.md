@@ -28,7 +28,7 @@ now execute the following steps to start integrating AKS-managed Azure AD.
 1. Create first the Azure AD group that is going to map the Kubernetes Cluster Role Admin.
 
    ```bash
-   K8S_RBAC_AAD_ADMIN_GROUP_OBJECTID=$(az ad group create --display-name add-to-bu0001a000800-cluster-admin --mail-nickname add-to-bu0001a000800-cluster-admin --query objectId -o tsv)
+   K8S_RBAC_AAD_PROFILE_ADMIN_GROUP_OBJECTID=$(az ad group create --display-name add-to-bu0001a000800-cluster-admin --mail-nickname add-to-bu0001a000800-cluster-admin --query objectId -o tsv)
    ```
 
 1. Create another Cluster Admin for your AKS cluster
